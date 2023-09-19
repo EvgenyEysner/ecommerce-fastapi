@@ -1,10 +1,14 @@
-import Image from 'next/image'
-import {Button} from '@/components/ui/button';
+import {Container} from "@/app/Container";
+import {HomeBanner} from "@/app/components/banner/HomeBanner";
 
 export default function Home() {
   return (
-    <div>
-      Online Shop
+    <div className='p-8'>
+      <Container>
+        <div>
+          <HomeBanner/>
+        </div>
+      </Container>
     </div>
   )
 }
