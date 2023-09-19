@@ -9,7 +9,7 @@
 .vscode/
 
 # JetBrains
-../../.idea/
+./.idea/
 
 # SublimeText
 *.tmlanguage.cache

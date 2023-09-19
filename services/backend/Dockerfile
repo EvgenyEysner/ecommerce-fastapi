@@ -1,5 +1,10 @@
 FROM python:3.10
 
+# to create or restore a psql dump
+RUN apt-get update
+RUN apt-get install postgresql-client --yes
+RUN apt-get install postgresql-client-common --yes
+RUN apt-get install libpq-dev
 RUN mkdir app
 WORKDIR /app
 
