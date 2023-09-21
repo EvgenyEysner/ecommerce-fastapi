@@ -1,12 +1,25 @@
 "use client"
-import {ProductDetailsProps} from "@/types"
-import React from "react";
+import {CartProductType, ProductDetailsProps} from "@/types"
+import React, {useState} from "react";
 import {Rating} from "@mui/material";
 
 
 export const ProductDetails: React.FC<ProductDetailsProps> = ({product}) => {
   const productRating = product.reviews.reduce((accumulator: number, item: any) => item.rating + accumulator, 0)
     / product.reviews.length
+
+  const [cartProduct, setCartProduct] = useState<CartProductType>(
+    {
+      id: product.id,
+      name: product.name,
+      description: product.description,
+      category: product.category,
+      brand: product.brand,
+      selectedImg: {...product.images[0]},
+      quantity: 1,
+      price: product.price
+    }
+  )
   const Horizontal = () => {
     return (
       <hr className='w-[30%] my-2'/>
