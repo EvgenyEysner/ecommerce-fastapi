@@ -1,7 +1,7 @@
 import {Container} from "@/app/Container";
 import {HomeBanner} from "@/app/components/banner/HomeBanner";
 import {products} from "@/utils/products";
-import {truncateText} from "@/utils/truncateText";
+import {ProductCard} from "@/app/components/product/ProductCard";
 
 export default function Home() {
   return (
@@ -13,9 +13,7 @@ export default function Home() {
         <div className='grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-8'>
           {products.map((product: any) => {
             return (
-              <div key={product.id}>
-                {truncateText(product.name)}
-              </div>
+              <ProductCard key={product.id} data={product} />
             )
           })}
         </div>
