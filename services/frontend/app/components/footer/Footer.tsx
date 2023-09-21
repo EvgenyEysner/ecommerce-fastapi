@@ -1,8 +1,8 @@
 import React from "react";
-import {Container} from "@/app/Container";
-import {FooterList} from "@/app/components/footer/FooterList";
+import { Container } from "@/app/Container";
+import { FooterList } from "@/app/components/footer/FooterList";
 import Link from "next/link";
-import {FaTelegram, FaVk, FaWhatsapp, FaYoutube} from "react-icons/fa";
+import { FaTelegram, FaVk, FaWhatsapp, FaYoutube } from "react-icons/fa";
 
 export const Footer: React.FC = () => {
   return (
@@ -40,10 +40,10 @@ export const Footer: React.FC = () => {
           <FooterList>
             <h3 className='text-base font-bold mb-2'>Мы в соцсетях</h3>
             <div className='flex gap-2'>
-              <Link href='#'><FaTelegram size={24}/></Link>
-              <Link href='#'><FaVk size={24}/></Link>
-              <Link href='#'><FaWhatsapp size={24}/></Link>
-              <Link href='#'><FaYoutube size={24}/></Link>
+              <Link href='#'><FaTelegram size={24} /></Link>
+              <Link href='#'><FaVk size={24} /></Link>
+              <Link href='#'><FaWhatsapp size={24} /></Link>
+              <Link href='#'><FaYoutube size={24} /></Link>
             </div>
           </FooterList>
         </div>

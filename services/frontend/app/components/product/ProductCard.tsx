@@ -1,16 +1,20 @@
-import {ProductCardProps} from "@/types";
+'use client'
+
+import { ProductCardProps } from "@/types";
 import React from "react";
 import Image from "next/image";
-import {truncateText} from "@/utils/truncateText";
-import {formatPrice} from "@/utils/formatPrice";
-import {Rating} from "@mui/material";
-import {accumulateMetadata} from "next/dist/lib/metadata/resolve-metadata";
+import { truncateText } from "@/utils/truncateText";
+import { formatPrice } from "@/utils/formatPrice";
+import { Rating } from "@mui/material";
+import { useRouter } from "next/navigation";
 
 export const ProductCard: React.FC<ProductCardProps> = (data) => {
+  const router = useRouter()
   const productRating = data.data.reviews.reduce((accumulator: number, item: any) => item.rating + accumulator, 0)
     / data.data.reviews.length
   return (
     <div
+      onClick={() => router.push(`/product/${data.data.id}`)}
       className='
       col-span-1
       cursor-pointer border-[1.2px]
@@ -35,7 +39,7 @@ export const ProductCard: React.FC<ProductCardProps> = (data) => {
           {truncateText(data.data.name)}
         </div>
         <div>
-          <Rating value={productRating} readOnly/>
+          <Rating value={productRating} readOnly />
         </div>
         <div>{data.data.reviews.length} Отзывов</div>
         <div className='font-semibold'>{formatPrice(data.data.price)}</div>

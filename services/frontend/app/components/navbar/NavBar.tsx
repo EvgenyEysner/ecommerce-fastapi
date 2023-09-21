@@ -1,9 +1,9 @@
 import React from "react";
-import {Container} from "@/app/Container"
+import { Container } from "@/app/Container"
 import Link from "next/link";
-import {Redressed} from "next/font/google";
+import { Redressed } from "next/font/google";
 
-const redressed = Redressed({subsets: ['latin'], weight: ['400']});
+const redressed = Redressed({ subsets: ['latin'], weight: ['400'] });
 export const NavBar: React.FC = () => {
   return (
     <div className='sticky top-0 w-full bg-slate-200 z-30 shadow-sm'>
