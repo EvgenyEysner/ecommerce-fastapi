@@ -8,8 +8,8 @@ export const SetColor: React.FC<SetColorProps> = (
     images,
     cartProduct,
     handleColorSelect
-  }) => {
-  return (
+  }) =>
+  (
     <div className='flex gap-4 items-center'>
       <span className='font-semibold'>Цвет: </span>
       <div className='flex gap-1'>
@@ -33,4 +33,3 @@ export const SetColor: React.FC<SetColorProps> = (
       </div>
     </div>
   )
-}
