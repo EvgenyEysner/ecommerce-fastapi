@@ -3,6 +3,7 @@ import {CartProductType, ProductDetailsProps, SelectedImgType} from "@/types"
 import React, {useCallback, useState} from "react";
 import {Rating} from "@mui/material";
 import {SetColor} from "@/app/components/product/SetColor";
+import {SetQuantity} from "@/app/components/product/SetQuantity";
 
 
 export const ProductDetails: React.FC<ProductDetailsProps> = ({product}) => {
@@ -26,6 +27,25 @@ export const ProductDetails: React.FC<ProductDetailsProps> = ({product}) => {
       <hr className='w-[30%] my-2'/>
     )
   }
+
+  const handleQtyIncrease = useCallback(() => {
+    if(cartProduct.quantity === 99){
+        return
+      }
+    setCartProduct((prev) => {
+      return {
+        ...prev, quantity: ++prev.quantity
+      }
+    })
+  }, [])
+
+  const handleQtyDecrease = useCallback(() => {
+    setCartProduct((prev) => {
+      return {
+        ...prev, quantity: --prev.quantity
+      }
+    })
+  }, [])
 
   const handleColorSelect = useCallback((value: SelectedImgType) => {
     setCartProduct(prev => {
@@ -65,7 +85,11 @@ export const ProductDetails: React.FC<ProductDetailsProps> = ({product}) => {
           handleColorSelect={handleColorSelect}
         />
         <Horizontal/>
-        <div>Quantity</div>
+        <SetQuantity
+          cartProduct={cartProduct}
+          handleQtyIncrease={handleQtyIncrease}
+          handleQtyDecrease={handleQtyDecrease}
+        />
         <Horizontal/>
         <div>Добавить в корзину</div>
       </div>

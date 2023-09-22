@@ -28,6 +28,13 @@ export interface SetColorProps {
   handleColorSelect: (value: SelectedImgType) => void
 }
 
+export interface SetQuantityProps {
+  cartCounter?: boolean
+  cartProduct: CartProductType
+  handleQtyIncrease: () => void
+  handleQtyDecrease: () => void
+}
+
 // -------------------- Types ------------------------- //
 
 export type CartProductType = {
