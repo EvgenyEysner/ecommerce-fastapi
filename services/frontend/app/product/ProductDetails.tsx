@@ -1,7 +1,8 @@
 "use client"
-import {CartProductType, ProductDetailsProps} from "@/types"
-import React, {useState} from "react";
+import {CartProductType, ProductDetailsProps, SelectedImgType} from "@/types"
+import React, {useCallback, useState} from "react";
 import {Rating} from "@mui/material";
+import {SetColor} from "@/app/components/product/SetColor";
 
 
 export const ProductDetails: React.FC<ProductDetailsProps> = ({product}) => {
@@ -25,6 +26,12 @@ export const ProductDetails: React.FC<ProductDetailsProps> = ({product}) => {
       <hr className='w-[30%] my-2'/>
     )
   }
+
+  const handleColorSelect = useCallback((value: SelectedImgType) => {
+    setCartProduct(prev => {
+      return {...prev, selectedImg: value}
+    })
+  }, [cartProduct.selectedImg])
   return (
     <div className='grid grid-cols-1 md:grid-cols-2 gap-12'>
       <div>Image</div>
@@ -52,7 +59,11 @@ export const ProductDetails: React.FC<ProductDetailsProps> = ({product}) => {
           {product.inStock ? 'Есть в наличии' : 'Нет в наличии'}
         </div>
         <Horizontal/>
-        <div>Color</div>
+        <SetColor
+          cartProduct={cartProduct}
+          images={product.images}
+          handleColorSelect={handleColorSelect}
+        />
         <Horizontal/>
         <div>Quantity</div>
         <Horizontal/>

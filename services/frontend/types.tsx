@@ -22,6 +22,12 @@ export interface ProductDetailsProps {
   product: any
 }
 
+export interface SetColorProps {
+  images: SelectedImgType[]
+  cartProduct: CartProductType
+  handleColorSelect: (value: SelectedImgType) => void
+}
+
 // -------------------- Types ------------------------- //
 
 export type CartProductType = {
