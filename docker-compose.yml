@@ -28,14 +28,6 @@ services:
       - ./services/frontend/src:/frontend/src
       - ./services/frontend/public:/frontend/public
 
-#  frontend:
-#    build: ./services/frontend
-#    volumes:
-#      - './services/frontend:/app'
-#      - '/app/node_modules'
-#    ports:
-#      - 8080:8080
-
   db:
     image: library/postgres:11.8-alpine
     container_name: app_db
@@ -43,8 +35,9 @@ services:
       - "5432:5432"
     environment:
       POSTGRES_DB: app_db
-      POSTGRES_USER: app_user
+      POSTGRES_USER: root
       POSTGRES_PASSWORD: top-secret
+      PGDATA: /data/postgres
     volumes:
       - postgres_data:/var/lib/postgresql/data/
 

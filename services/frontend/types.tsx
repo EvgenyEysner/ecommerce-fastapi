@@ -1,4 +1,5 @@
 import React from "react";
+import { IconType } from "react-icons"
 
 
 // -------------------- Interfaces ------------------------- //
@@ -33,6 +34,16 @@ export interface SetQuantityProps {
   cartProduct: CartProductType
   handleQtyIncrease: () => void
   handleQtyDecrease: () => void
+}
+
+export interface ButtonProps {
+  label: string
+  disabled?: boolean
+  outline?: boolean
+  small?: boolean
+  custom?: boolean
+  icon?: IconType
+  onClick: (event: React.MouseEvent<HTMLButtonElement>) => void
 }
 
 // -------------------- Types ------------------------- //
