@@ -46,6 +46,12 @@ export interface CartButtonProps {
   onClick: (event: React.MouseEvent<HTMLButtonElement>) => void
 }
 
+export interface ProductImageProps {
+  cartProduct: CartProductType,
+  product: any,
+  handleColorSelect: (value: SelectedImgType) => void
+}
+
 // -------------------- Types ------------------------- //
 
 export type CartProductType = {
