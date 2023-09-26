@@ -1,7 +1,8 @@
 import { Container } from "@/app/Container"
 import { IParams } from "@/types"
 import { ProductDetails } from "../ProductDetails"
-import {product} from "@/utils/product";
+import { product } from "@/utils/product";
+import { ListRating } from "./ListRating";
 
 
 const Product = ({ params }: { params: IParams }) => {
@@ -9,8 +10,12 @@ const Product = ({ params }: { params: IParams }) => {
   return (
     <div className="p-8">
       <Container>
-        <ProductDetails product={product}/>
+        <ProductDetails product={product} />
       </Container>
+      <div className='flex flex-col mt-20 gap-4'>
+        <div>RatingList</div>
+        <ListRating product={product} />
+      </div>
     </div>
   )
 }

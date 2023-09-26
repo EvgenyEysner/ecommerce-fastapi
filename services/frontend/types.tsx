@@ -52,6 +52,14 @@ export interface ProductImageProps {
   handleColorSelect: (value: SelectedImgType) => void
 }
 
+export interface ListRatingProps {
+  product: any,
+}
+
+export interface HeadingProps {
+  title: string,
+  center?: boolean,
+}
 // -------------------- Types ------------------------- //
 
 export type CartProductType = {
