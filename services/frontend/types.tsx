@@ -60,6 +60,10 @@ export interface HeadingProps {
   title: string,
   center?: boolean,
 }
+
+export interface AvatarProps {
+  src: string | null | undefined
+}
 // -------------------- Types ------------------------- //
 
 export type CartProductType = {
