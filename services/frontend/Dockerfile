@@ -11,5 +11,6 @@ RUN yarn --no-progress && rm -rf /tmp/*
 COPY . /frontend/
 
 RUN yarn build
+EXPOSE 3000
 
 CMD [ "yarn", "start" ]
