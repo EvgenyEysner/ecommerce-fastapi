@@ -12,7 +12,7 @@ export const ListRating: React.FC<ListRatingProps> = ({ product }) => {
       <div className='text-sm'>
         {product.reviews && product.reviews.map((review: any) => {
           return (
-            <div key={review.id} className='max-w-300px'>
+            <div key={review.id} className='max-w-[300px]'>
               <div className='flex gap-2 items-center'>
                 <Avatar src={review.user.image.image} />
                 <div className='font-semibold'>{review?.user.name}</div>
@@ -21,7 +21,7 @@ export const ListRating: React.FC<ListRatingProps> = ({ product }) => {
               <div className='mt-2'>
                 <Rating value={review.rating} readOnly />
                 <div className='ml-2'>{review.comment}</div>
-                <hr className='mt-4 mb-4 w-[30%]' />
+                <hr className='mt-4 mb-4' />
               </div>
             </div>
           )

@@ -64,6 +64,10 @@ export interface HeadingProps {
 export interface AvatarProps {
   src: string | null | undefined
 }
+
+export interface ProviderProps {
+  [propName: string]: any
+}
 // -------------------- Types ------------------------- //
 
 export type CartProductType = {
@@ -82,4 +86,8 @@ export type SelectedImgType = {
   color: string,
   colorCode: string,
   image: string
+}
+
+export type CartContextType = {
+  cartTotalQty: number,
 }
