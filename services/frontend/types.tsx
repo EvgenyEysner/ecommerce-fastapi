@@ -68,6 +68,10 @@ export interface AvatarProps {
 export interface ProviderProps {
   [propName: string]: any
 }
+
+export interface CartProviderProps {
+  children: React.ReactNode
+}
 // -------------------- Types ------------------------- //
 
 export type CartProductType = {

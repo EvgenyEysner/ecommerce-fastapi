@@ -1,17 +1,18 @@
 "use client"
-import {CartProductType, ProductDetailsProps, SelectedImgType} from "@/types"
-import React, {useCallback, useState} from "react";
-import {Rating} from "@mui/material";
-import {SetColor} from "@/app/components/product/SetColor";
-import {SetQuantity} from "@/app/components/product/SetQuantity";
-import {CartButton} from "../components/button/CartButton";
-import {ProductImage} from "@/app/components/product/ProductImage";
+import { CartProductType, ProductDetailsProps, SelectedImgType } from "@/types"
+import React, { useCallback, useState } from "react";
+import { Rating } from "@mui/material";
+import { SetColor } from "@/app/components/product/SetColor";
+import { SetQuantity } from "@/app/components/product/SetQuantity";
+import { CartButton } from "../components/button/CartButton";
+import { ProductImage } from "@/app/components/product/ProductImage";
+import { useCart } from "@/hooks/useCart";
 
 
-export const ProductDetails: React.FC<ProductDetailsProps> = ({product}) => {
+export const ProductDetails: React.FC<ProductDetailsProps> = ({ product }) => {
   const productRating = product.reviews.reduce((accumulator: number, item: any) => item.rating + accumulator, 0)
     / product.reviews.length
-
+  const { cartTotalQty } = useCart(0)
   const [cartProduct, setCartProduct] = useState<CartProductType>(
     {
       id: product.id,
@@ -19,14 +20,16 @@ export const ProductDetails: React.FC<ProductDetailsProps> = ({product}) => {
       description: product.description,
       category: product.category,
       brand: product.brand,
-      selectedImg: {...product.images[0]},
+      selectedImg: { ...product.images[0] },
       quantity: 1,
       price: product.price
     }
   )
+
+  console.log(cartTotalQty)
   const Horizontal = () => {
     return (
-      <hr className='w-[30%] my-2'/>
+      <hr className='w-[30%] my-2' />
     )
   }
 
@@ -51,24 +54,24 @@ export const ProductDetails: React.FC<ProductDetailsProps> = ({product}) => {
 
   const handleColorSelect = useCallback((value: SelectedImgType) => {
     setCartProduct(prev => {
-      return {...prev, selectedImg: value}
+      return { ...prev, selectedImg: value }
     })
   }, [cartProduct.selectedImg])
   return (
     <div className='grid grid-cols-1 md:grid-cols-2 gap-12'>
-      <ProductImage cartProduct={cartProduct} product={product} handleColorSelect={handleColorSelect}/>
+      <ProductImage cartProduct={cartProduct} product={product} handleColorSelect={handleColorSelect} />
       <div className='flex flex-col gap-1 text-slate-500 text-sm'>
         <h2 className='text-3xl font-medium text-slate-700'>{product.name}</h2>
-        <Horizontal/>
+        <Horizontal />
         <div>
-          <Rating value={productRating} readOnly/>
+          <Rating value={productRating} readOnly />
           <div className='flex items-center gap-2 '>{product.reviews.length} Отзывы</div>
         </div>
-        <Horizontal/>
+        <Horizontal />
         <div className='text-justify'>
           {product.description}
         </div>
-        <Horizontal/>
+        <Horizontal />
         <div>
           <span className='font-semibold'>Категория: </span>
           {product.category}
@@ -80,24 +83,23 @@ export const ProductDetails: React.FC<ProductDetailsProps> = ({product}) => {
         <div className={product.inStock ? 'text-teal-700' : 'text-rose-900'}>
           {product.inStock ? 'Есть в наличии' : 'Нет в наличии'}
         </div>
-        <Horizontal/>
+        <Horizontal />
         <SetColor
           cartProduct={cartProduct}
           images={product.images}
           handleColorSelect={handleColorSelect}
         />
-        <Horizontal/>
+        <Horizontal />
         <SetQuantity
           cartProduct={cartProduct}
           handleQtyIncrease={handleQtyIncrease}
           handleQtyDecrease={handleQtyDecrease}
         />
-        <Horizontal/>
+        <Horizontal />
         <div className='max-w-[300px]'>
           <CartButton
             label={"Добавить в корзину"}
             onClick={() => {
-
             }}
           />
         </div>
