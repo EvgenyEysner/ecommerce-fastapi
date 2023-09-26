@@ -94,4 +94,6 @@ export type SelectedImgType = {
 
 export type CartContextType = {
   cartTotalQty: number,
+  cartProducts: CartProductType[] | null
+  handleAddProductToCart: (product: CartProductType) => void
 }

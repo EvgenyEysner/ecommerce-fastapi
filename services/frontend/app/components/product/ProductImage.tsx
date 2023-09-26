@@ -36,7 +36,7 @@ export const ProductImage: React.FC<ProductImageProps> = ({
           (image: { image: any; color?: string; colorCode?: string }) => {
             return (
               <div
-                key={product.id}
+                key={image.colorCode}
                 onClick={() => handleColorSelect(image as SelectedImgType)}
                 className={`
                  relative w-[80%]
@@ -51,7 +51,7 @@ export const ProductImage: React.FC<ProductImageProps> = ({
               >
                 <Image
                   src={image.image}
-                  alt={image.image.color}
+                  alt={image.image.name}
                   fill
                   className="object-contain"
                 />

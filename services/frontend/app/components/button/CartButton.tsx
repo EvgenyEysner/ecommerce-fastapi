@@ -8,10 +8,11 @@ export const CartButton: React.FC<CartButtonProps> = ({
   outline,
   small,
   custom,
-  icon: Icon
+  icon: Icon,
+  onClick,
 }) => {
   return (
-    <button className={`
+    <button onClick={onClick} className={`
       disabled: opacity-70
       disabled: cursor-not-alowed
       rounded-md

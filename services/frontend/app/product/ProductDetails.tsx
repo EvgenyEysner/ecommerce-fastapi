@@ -12,7 +12,7 @@ import { useCart } from "@/hooks/useCart";
 export const ProductDetails: React.FC<ProductDetailsProps> = ({ product }) => {
   const productRating = product.reviews.reduce((accumulator: number, item: any) => item.rating + accumulator, 0)
     / product.reviews.length
-  const { cartTotalQty } = useCart(0)
+  const { handleAddProductToCart, cartProducts } = useCart()
   const [cartProduct, setCartProduct] = useState<CartProductType>(
     {
       id: product.id,
@@ -26,7 +26,6 @@ export const ProductDetails: React.FC<ProductDetailsProps> = ({ product }) => {
     }
   )
 
-  console.log(cartTotalQty)
   const Horizontal = () => {
     return (
       <hr className='w-[30%] my-2' />
@@ -57,6 +56,8 @@ export const ProductDetails: React.FC<ProductDetailsProps> = ({ product }) => {
       return { ...prev, selectedImg: value }
     })
   }, [cartProduct.selectedImg])
+
+  console.log(cartProducts)
   return (
     <div className='grid grid-cols-1 md:grid-cols-2 gap-12'>
       <ProductImage cartProduct={cartProduct} product={product} handleColorSelect={handleColorSelect} />
@@ -99,8 +100,7 @@ export const ProductDetails: React.FC<ProductDetailsProps> = ({ product }) => {
         <div className='max-w-[300px]'>
           <CartButton
             label={"Добавить в корзину"}
-            onClick={() => {
-            }}
+            onClick={() => handleAddProductToCart(cartProduct)}
           />
         </div>
       </div>
