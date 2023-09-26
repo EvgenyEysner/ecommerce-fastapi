@@ -36,12 +36,12 @@ export interface SetQuantityProps {
   handleQtyDecrease: () => void
 }
 
-export interface ButtonProps {
+export interface CartButtonProps {
   label: string
   disabled?: boolean
   outline?: boolean
   small?: boolean
-  custom?: boolean
+  custom?: string
   icon?: IconType
   onClick: (event: React.MouseEvent<HTMLButtonElement>) => void
 }

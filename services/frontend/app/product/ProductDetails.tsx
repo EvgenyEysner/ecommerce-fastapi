@@ -4,6 +4,7 @@ import React, { useCallback, useState } from "react";
 import { Rating } from "@mui/material";
 import { SetColor } from "@/app/components/product/SetColor";
 import { SetQuantity } from "@/app/components/product/SetQuantity";
+import { CartButton } from "../components/button/CartButton";
 
 
 export const ProductDetails: React.FC<ProductDetailsProps> = ({ product }) => {
@@ -91,7 +92,14 @@ export const ProductDetails: React.FC<ProductDetailsProps> = ({ product }) => {
           handleQtyDecrease={handleQtyDecrease}
         />
         <Horizontal />
-        <div>Добавить в корзину</div>
+        <div className='max-w-[300px]'>
+          <CartButton
+            label={"Добавить в корзину"}
+            onClick={() => {
+
+            }}
+          />
+        </div>
       </div>
     </div>
   )
