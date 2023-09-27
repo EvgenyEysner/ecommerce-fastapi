@@ -1,6 +1,7 @@
 import { createContext, useState, useContext } from "react";
 import { CartContextType, CartProductType, ProviderProps } from "@/types";
 import { useCallback, useEffect } from "react";
+import { toast } from "react-hot-toast"
 
 export const CartContext = createContext<CartContextType | null>(null)
 
@@ -22,6 +23,8 @@ export const CartContextProvider = (props: ProviderProps) => {
       } else {
         updatedCart = [product]
       }
+
+      toast.success(product.name + ' добавлен в корзину')
       localStorage.setItem('eShopCartItems', JSON.stringify(updatedCart))
       return updatedCart
     })
