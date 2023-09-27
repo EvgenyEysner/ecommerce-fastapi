@@ -58,7 +58,7 @@ export const CartContextProvider = (props: ProviderProps) => {
         updatedCart[existingIndex].quantity = ++updatedCart[existingIndex].quantity
       }
       setCartProducts(updatedCart)
-      localStorage.setItem('eShopingCart', JSON.stringify(updatedCart))
+      localStorage.setItem('eShopCartItems', JSON.stringify(updatedCart))
     }
 
   }, [cartProducts])
@@ -78,8 +78,15 @@ export const CartContextProvider = (props: ProviderProps) => {
         updatedCart[existingIndex].quantity = --updatedCart[existingIndex].quantity
       }
       setCartProducts(updatedCart)
-      localStorage.setItem('eShopingCart', JSON.stringify(updatedCart))
+      localStorage.setItem('eShopCartItems', JSON.stringify(updatedCart))
     }
+
+  }, [cartProducts])
+
+  const handleCartClear = useCallback(() => {
+    setCartProducts(null)
+    setCartTotalQty(0)
+    localStorage.setItem('eShopCartItems', JSON.stringify(null))
 
   }, [cartProducts])
 
@@ -90,6 +97,7 @@ export const CartContextProvider = (props: ProviderProps) => {
     handleRemoveProductFormCart,
     handleCartQtyIncrease,
     handleCartQtyDecrease,
+    handleCartClear
   }
 
   return <CartContext.Provider value={value} {...props} />

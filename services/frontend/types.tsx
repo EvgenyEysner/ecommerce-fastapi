@@ -103,4 +103,5 @@ export type CartContextType = {
   handleRemoveProductFormCart: (product: CartProductType) => void
   handleCartQtyIncrease: (product: CartProductType) => void
   handleCartQtyDecrease: (product: CartProductType) => void
+  handleCartClear: () => void
 }

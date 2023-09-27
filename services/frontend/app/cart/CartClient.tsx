@@ -8,7 +8,7 @@ import { CartButton } from '../components/button/CartButton';
 import { ItemContent } from './ItemContent';
 
 export const CartClient = () => {
-  const { cartProducts } = useCart()
+  const { cartProducts, handleCartClear } = useCart()
   if (!cartProducts || cartProducts.length === 0) {
     return (
       <div className='flex flex-col items-center'>
@@ -39,9 +39,7 @@ export const CartClient = () => {
       </div>
       <div className='border-t-[1.5px] border-slate-200 py-4 flex justify-between gap-4'>
         <div className='w-[90px]'>
-          <CartButton label='Очистить' small outline onClick={() => {
-
-          }} />
+          <CartButton label='Очистить' small outline onClick={() => { handleCartClear() }} />
         </div>
         <div className='text-sm flex gap-1 flex-col items-start'>
           <div className='flex justify-between w-full text-base semibold'>
