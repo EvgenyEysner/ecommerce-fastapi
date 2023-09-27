@@ -2,6 +2,7 @@ import React from "react";
 import { Container } from "@/app/Container"
 import Link from "next/link";
 import { Redressed } from "next/font/google";
+import { CartCount } from "./CartCount";
 
 const redressed = Redressed({ subsets: ['latin'], weight: ['400'] });
 export const NavBar: React.FC = () => {
@@ -16,7 +17,7 @@ export const NavBar: React.FC = () => {
             <div className='hidden md:block'>Поиск</div>
             <div className='flex items-center md:12 gap-8'>
               <div>
-                CartCount
+                <CartCount />
               </div>
               <div>
                 UserMenu

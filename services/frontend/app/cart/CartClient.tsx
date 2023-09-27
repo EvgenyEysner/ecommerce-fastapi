@@ -6,9 +6,10 @@ import { MdArrowBack } from 'react-icons/md';
 import { Heading } from '../components/product/Heading';
 import { CartButton } from '../components/button/CartButton';
 import { ItemContent } from './ItemContent';
+import { formatPrice } from '@/utils/formatPrice';
 
 export const CartClient = () => {
-  const { cartProducts, handleCartClear } = useCart()
+  const { cartProducts, handleCartClear, cartTotalAmount } = useCart()
   if (!cartProducts || cartProducts.length === 0) {
     return (
       <div className='flex flex-col items-center'>
@@ -43,8 +44,8 @@ export const CartClient = () => {
         </div>
         <div className='text-sm flex gap-1 flex-col items-start'>
           <div className='flex justify-between w-full text-base semibold'>
-            <span>SubTotal</span>
-            <span>1000 ₽</span>
+            <span className='font-semibold'>Сумма</span>
+            <span className='font-semibold'>{formatPrice(cartTotalAmount)}</span>
           </div>
           <p className='text-slate-500'>Taxes and shipping at checkout</p>
           <CartButton label='Оформить покупку' onClick={() => {

@@ -117,6 +117,7 @@ export const CartContextProvider = (props: ProviderProps) => {
 
   const value = {
     cartTotalQty,
+    cartTotalAmount,
     cartProducts,
     handleAddProductToCart,
     handleRemoveProductFormCart,
