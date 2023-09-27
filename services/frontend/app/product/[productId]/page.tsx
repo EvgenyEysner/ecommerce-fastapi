@@ -1,12 +1,13 @@
 import { Container } from "@/app/Container"
 import { IParams } from "@/types"
 import { ProductDetails } from "../ProductDetails"
-import { product } from "@/utils/product";
 import { ListRating } from "./ListRating";
+import { products } from "@/utils/products";
 
 
 const Product = ({ params }: { params: IParams }) => {
-  console.log(params)
+  const product = products.find((item) => item.id === params.productId)
+
   return (
     <div className="p-8">
       <Container>

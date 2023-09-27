@@ -32,7 +32,7 @@ export const ProductCard: React.FC<ProductCardProps> = (data) => {
             src={data.data.images[0].image}
             alt={data.data.images[0].image.name}
             fill
-            className='w-full h-full'
+            className='object-contain'
           />
         </div>
         <div>
