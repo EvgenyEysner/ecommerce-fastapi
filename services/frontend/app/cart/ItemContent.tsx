@@ -12,6 +12,7 @@ import { useCart } from '@/hooks/useCart';
 export const ItemContent: React.FC<ItemContentProps> = ({ item }) => {
   const { handleRemoveProductFormCart } = useCart()
   const { handleCartQtyIncrease } = useCart()
+  const { handleCartQtyDecrease } = useCart()
 
   return (
     <div className='grid grid-cols-5 text-xs md:text-sm gap-4 border-t-[1.5px] border-slate-200 py-4 items-center'>
@@ -40,7 +41,7 @@ export const ItemContent: React.FC<ItemContentProps> = ({ item }) => {
         <SetQuantity
           cartCounter={true}
           cartProduct={item}
-          handleQtyDecrease={() => { }}
+          handleQtyDecrease={() => { handleCartQtyDecrease(item) }}
           handleQtyIncrease={() => { handleCartQtyIncrease(item) }}
         />
       </div>

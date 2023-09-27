@@ -63,12 +63,33 @@ export const CartContextProvider = (props: ProviderProps) => {
 
   }, [cartProducts])
 
+  const handleCartQtyDecrease = useCallback((product: CartProductType) => {
+    let updatedCart
+
+    if (product.quantity === 1) {
+      return toast.error('Это минимум ...')
+    }
+
+    if (cartProducts) {
+      updatedCart = [...cartProducts]
+      const existingIndex = cartProducts.findIndex((item) => item.id === product.id)
+
+      if (existingIndex > -1) {
+        updatedCart[existingIndex].quantity = --updatedCart[existingIndex].quantity
+      }
+      setCartProducts(updatedCart)
+      localStorage.setItem('eShopingCart', JSON.stringify(updatedCart))
+    }
+
+  }, [cartProducts])
+
   const value = {
     cartTotalQty,
     cartProducts,
     handleAddProductToCart,
     handleRemoveProductFormCart,
     handleCartQtyIncrease,
+    handleCartQtyDecrease,
   }
 
   return <CartContext.Provider value={value} {...props} />
