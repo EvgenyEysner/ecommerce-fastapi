@@ -101,4 +101,5 @@ export type CartContextType = {
   cartProducts: CartProductType[] | null
   handleAddProductToCart: (product: CartProductType) => void
   handleRemoveProductFormCart: (product: CartProductType) => void
+  handleCartQtyIncrease: (product: CartProductType) => void
 }
