@@ -1,6 +1,7 @@
 "use client"
 
 import { CartButtonProps } from "@/types"
+import React from "react"
 
 export const CartButton: React.FC<CartButtonProps> = ({
   label,
