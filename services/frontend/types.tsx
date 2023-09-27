@@ -72,6 +72,10 @@ export interface ProviderProps {
 export interface CartProviderProps {
   children: React.ReactNode
 }
+
+export interface ItemContentProps {
+  item: CartProductType
+}
 // -------------------- Types ------------------------- //
 
 export type CartProductType = {
