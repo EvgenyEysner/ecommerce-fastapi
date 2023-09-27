@@ -29,10 +29,25 @@ export const CartContextProvider = (props: ProviderProps) => {
       return updatedCart
     })
   }, [])
+
+  const handleRemoveProductFormCart = useCallback((product: CartProductType) => {
+    if (cartProducts) {
+      const filteredProducts = cartProducts.filter((item) => {
+        return item.id !== product.id
+      })
+
+      setCartProducts(filteredProducts)
+      toast.success(product.name + ' удалён')
+      localStorage.setItem('eShopCartItems', JSON.stringify(filteredProducts))
+
+    }
+  }, [cartProducts])
+
   const value = {
     cartTotalQty,
     cartProducts,
     handleAddProductToCart,
+    handleRemoveProductFormCart
   }
 
   return <CartContext.Provider value={value} {...props} />
