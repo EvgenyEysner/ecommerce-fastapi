@@ -1,5 +1,6 @@
 import React from "react";
 import { IconType } from "react-icons"
+import { UseFormRegister, FieldValues, FieldErrors } from "react-hook-form"
 
 
 // -------------------- Interfaces ------------------------- //
@@ -13,7 +14,7 @@ export interface FooterListProps {
 
 export interface IParams {
   productId?: string;
-};
+}
 
 export interface ProductCardProps {
   data: any
@@ -75,6 +76,16 @@ export interface CartProviderProps {
 
 export interface ItemContentProps {
   item: CartProductType
+}
+
+export interface InputProps {
+  id: string
+  label: string
+  type?: string
+  disabled?: boolean
+  required?: boolean
+  register: UseFormRegister<FieldValues>
+  errors: FieldErrors
 }
 // -------------------- Types ------------------------- //
 
