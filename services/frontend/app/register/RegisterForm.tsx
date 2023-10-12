@@ -59,7 +59,7 @@ export const RegisterForm = () => {
       />
       <CartButton label={isLoading ? 'Loading' : 'Sign Up'} onClick={handleSubmit(onSubmit)} />
       <p className='text-sm'>
-        У вас уже есть аккаунт? <Link href='/login' className='underline'>Log in</Link>
+        У вас уже есть аккаунт? <Link href='/login' className='underline'>Войти</Link>
       </p>
     </>
   )
