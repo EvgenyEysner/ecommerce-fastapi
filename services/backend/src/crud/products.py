@@ -17,7 +17,7 @@ async def get_product(product_id) -> ProductSchema:
 async def create_product(product, current_user) -> ProductSchema:
     product_dict = product.dict(exclude_unset=True)
     product_dict["user_id"] = current_user.id
-    product_obj = await product.create(**product_dict)
+    product_obj = await Product.create(**product_dict)
     return await ProductSchema.from_tortoise_orm(product_obj)
 
 

@@ -25,7 +25,12 @@ class Product(models.Model):
     services = fields.CharEnumField(SERVICES, default=SERVICES.PAYMENT_TAXI_ORDERS)
     created_at = fields.DatetimeField(auto_now_add=True)
     modified_at = fields.DatetimeField(auto_now=True)
-    user = fields.ForeignKeyField("models.User", related_name="owner")
+    quantity = fields.IntField(default=10)
+    price = fields.DecimalField(max_digits=10, decimal_places=2, default=0.00)
+    owner = fields.ForeignKeyField("models.User", related_name="owner")
+
+    def __str__(self):
+        return f"{self.services}, {self.quantity}, {self.price} on {self.created_at}, {self.owner}"
 
 
 class Order(models.Model):

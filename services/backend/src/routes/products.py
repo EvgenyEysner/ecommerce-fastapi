@@ -6,10 +6,9 @@ from tortoise.exceptions import DoesNotExist
 
 import src.crud.products as crud
 from src.auth.jwthandler import get_current_user
-from src.schemas.products import ProductSchema, UpdateProduct
+from src.schemas.products import ProductSchema
 from src.schemas.token import Status
 from src.schemas.users import UserOutSchema
-
 
 router = APIRouter()
 
@@ -35,7 +34,7 @@ async def get_single_product(product_id: int) -> ProductSchema:
 
 @router.post("/product", response_model=ProductSchema, dependencies=[Depends(get_current_user)])
 async def create_product(
-    product: ProductSchema, current_user: UserOutSchema = Depends(get_current_user)
+        product: ProductSchema, current_user: UserOutSchema = Depends(get_current_user)
 ) -> ProductSchema:
     return await crud.create_product(product, current_user)
 
@@ -47,11 +46,10 @@ async def create_product(
     responses={404: {"model": HTTPNotFoundError}},
 )
 async def update_product(
-    product_id: int,
-    product: UpdateProduct,
-    current_user: UserOutSchema = Depends(get_current_user),
+        product_id: int,
+        current_user: UserOutSchema = Depends(get_current_user),
 ) -> ProductSchema:
-    return await crud.update_product(product_id, product, current_user)
+    return await crud.update_product(product_id, current_user)
 
 
 @router.delete(
@@ -61,6 +59,6 @@ async def update_product(
     dependencies=[Depends(get_current_user)],
 )
 async def delete_order(
-    product_id: int, current_user: UserOutSchema = Depends(get_current_user)
+        product_id: int, current_user: UserOutSchema = Depends(get_current_user)
 ):
     return await crud.delete_product(product_id, current_user)

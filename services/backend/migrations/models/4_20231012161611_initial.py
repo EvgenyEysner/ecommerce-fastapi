@@ -17,7 +17,9 @@ CREATE TABLE IF NOT EXISTS "product" (
     "services" VARCHAR(71) NOT NULL  DEFAULT 'Оплата полученных заказов от службы заказа такси',
     "created_at" TIMESTAMPTZ NOT NULL  DEFAULT CURRENT_TIMESTAMP,
     "modified_at" TIMESTAMPTZ NOT NULL  DEFAULT CURRENT_TIMESTAMP,
-    "user_id" INT NOT NULL REFERENCES "user" ("id") ON DELETE CASCADE
+    "quantity" INT NOT NULL  DEFAULT 10,
+    "price" DECIMAL(10,2) NOT NULL  DEFAULT 0,
+    "owner_id" INT NOT NULL REFERENCES "user" ("id") ON DELETE CASCADE
 );
 COMMENT ON COLUMN "product"."services" IS 'PAYMENT_TAXI_ORDERS: Оплата полученных заказов от службы заказа такси\nWITHDRAWAL_FOR_DRIVERS: Вывод денег водителям такси, оплаченных пассажирам безналичным способом\nVOUCHERS_PAYMENT: Оплата за использование сервиса получения электронных путевых листов\nPAYMENT_FOR_MECHANICS: Оплата в пользу механика, выпускающего на линию\nPAYMENT_MEDICAL_EXAMINATION: Оплата в пользу медорганизации за предрейсовый медосмотр\nSOFTWARE_PRODUCTS_LICENCE: Оплата за использование программных продуктов разработчика';
 CREATE TABLE IF NOT EXISTS "order" (
