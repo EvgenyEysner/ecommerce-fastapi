@@ -23,13 +23,13 @@ async def create_product(product, current_user) -> ProductSchema:
 
 async def update_product(product_id, product, current_user) -> ProductSchema:
     try:
-        db_product = await ProductSchema.from_queryset_single(product.get(id=product_id))
+        db_product = await ProductSchema.from_queryset_single(Product.get(id=product_id))
     except DoesNotExist:
         raise HTTPException(status_code=404, detail=f"Product {product_id} not found")
 
-    if db_product.author.id == current_user.id:
-        await product.filter(id=product_id).update(**product.dict(exclude_unset=True))
-        return await ProductSchema.from_queryset_single(product.get(id=product_id))
+    if db_product.owner_id == current_user.id:
+        await Product.filter(id=product_id).update(**product.dict(exclude_unset=True))
+        return await ProductSchema.from_queryset_single(Product.get(id=product_id))
 
     raise HTTPException(status_code=403, detail=f"Not authorized to update")
 
@@ -40,7 +40,7 @@ async def delete_product(product_id, current_user) -> Status:
     except DoesNotExist:
         raise HTTPException(status_code=404, detail=f"Product {product_id} not found")
 
-    if db_product.author.id == current_user.id:
+    if db_product.owner_id == current_user.id:
         deleted_count = await Product.filter(id=product_id).delete()
         if not deleted_count:
             raise HTTPException(status_code=404, detail=f"Product {product_id} not found")

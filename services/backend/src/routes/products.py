@@ -6,7 +6,7 @@ from tortoise.exceptions import DoesNotExist
 
 import src.crud.products as crud
 from src.auth.jwthandler import get_current_user
-from src.schemas.products import ProductSchema
+from src.schemas.products import ProductSchema, UpdateProduct
 from src.schemas.token import Status
 from src.schemas.users import UserOutSchema
 
@@ -47,9 +47,10 @@ async def create_product(
 )
 async def update_product(
         product_id: int,
+        product: UpdateProduct,
         current_user: UserOutSchema = Depends(get_current_user),
-) -> ProductSchema:
-    return await crud.update_product(product_id, current_user)
+):
+    return await crud.update_product(product_id, product, current_user)
 
 
 @router.delete(

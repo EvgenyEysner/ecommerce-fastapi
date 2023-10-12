@@ -27,7 +27,7 @@ async def update_order(order_id, order, current_user) -> OrderOutSchema:
     except DoesNotExist:
         raise HTTPException(status_code=404, detail=f"Order {order_id} not found")
 
-    if db_order.author.id == current_user.id:
+    if db_order.user.id == current_user.id:
         await Order.filter(id=order_id).update(**order.dict(exclude_unset=True))
         return await OrderOutSchema.from_queryset_single(Order.get(id=order_id))
 
