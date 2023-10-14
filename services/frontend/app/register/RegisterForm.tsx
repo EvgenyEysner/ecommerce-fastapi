@@ -23,8 +23,6 @@ export const RegisterForm = () => {
 
   const onSubmit: SubmitHandler<FieldValues> = (data) => {
     setIsLoading(true)
-    console.log(data)
-
   }
 
   return (

@@ -21,8 +21,6 @@ export const LoginForm = () => {
 
   const onSubmit: SubmitHandler<FieldValues> = (data) => {
     setIsLoading(true)
-    console.log(data)
-
   }
 
   return (

@@ -112,9 +112,6 @@ export const CartContextProvider = (props: ProviderProps) => {
     getTotals()
   }, [cartProducts])
 
-  console.log('qty', cartTotalQty)
-  console.log('amout', cartTotalAmount)
-
   const value = {
     cartTotalQty,
     cartTotalAmount,
