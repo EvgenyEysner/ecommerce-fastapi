@@ -14,36 +14,29 @@ async def get_product(product_id) -> ProductSchema:
     return await ProductSchema.from_queryset_single(Product.get(id=product_id))
 
 
-async def create_product(product, current_user) -> ProductSchema:
+async def create_product(product) -> ProductSchema:
     product_dict = product.dict(exclude_unset=True)
-    product_dict["user_id"] = current_user.id
     product_obj = await Product.create(**product_dict)
     return await ProductSchema.from_tortoise_orm(product_obj)
 
 
-async def update_product(product_id, product, current_user) -> ProductSchema:
+async def update_product(product_id, product) -> ProductSchema:
     try:
-        db_product = await ProductSchema.from_queryset_single(Product.get(id=product_id))
+        await ProductSchema.from_queryset_single(Product.get(id=product_id))
+    except DoesNotExist:
+        raise HTTPException(status_code=404, detail=f"Product {product_id} not found")
+    await Product.filter(id=product_id).update(**product.dict(exclude_unset=True))
+
+    return await ProductSchema.from_queryset_single(Product.get(id=product_id))
+
+
+async def delete_product(product_id) -> Status:
+    try:
+        await ProductSchema.from_queryset_single(Product.get(id=product_id))
     except DoesNotExist:
         raise HTTPException(status_code=404, detail=f"Product {product_id} not found")
 
-    if db_product.owner_id == current_user.id:
-        await Product.filter(id=product_id).update(**product.dict(exclude_unset=True))
-        return await ProductSchema.from_queryset_single(Product.get(id=product_id))
-
-    raise HTTPException(status_code=403, detail=f"Not authorized to update")
-
-
-async def delete_product(product_id, current_user) -> Status:
-    try:
-        db_product = await ProductSchema.from_queryset_single(Product.get(id=product_id))
-    except DoesNotExist:
+    deleted_count = await Product.filter(id=product_id).delete()
+    if not deleted_count:
         raise HTTPException(status_code=404, detail=f"Product {product_id} not found")
-
-    if db_product.owner_id == current_user.id:
-        deleted_count = await Product.filter(id=product_id).delete()
-        if not deleted_count:
-            raise HTTPException(status_code=404, detail=f"Product {product_id} not found")
-        return Status(message=f"Deleted product {product_id}")
-
-    raise HTTPException(status_code=403, detail=f"Not authorized to delete")
+    return Status(message=f"Deleted product {product_id}")

@@ -7,7 +7,7 @@ async def upgrade(db: BaseDBAsyncClient) -> str:
     "id" SERIAL NOT NULL PRIMARY KEY,
     "name" VARCHAR(255) NOT NULL
 );
-CREATE TABLE IF NOT EXISTS "product" (
+CREATE TABLE IF NOT EXISTS "Category" (
     "id" SERIAL NOT NULL PRIMARY KEY,
     "name" VARCHAR(255) NOT NULL,
     "description" VARCHAR(1000),
@@ -35,7 +35,7 @@ CREATE TABLE IF NOT EXISTS "order" (
     "status" SMALLINT NOT NULL,
     "created_at" TIMESTAMPTZ NOT NULL  DEFAULT CURRENT_TIMESTAMP,
     "modified_at" TIMESTAMPTZ NOT NULL  DEFAULT CURRENT_TIMESTAMP,
-    "services_id" INT NOT NULL REFERENCES "product" ("id") ON DELETE CASCADE,
+    "services_id" INT NOT NULL REFERENCES "Category" ("id") ON DELETE CASCADE,
     "user_id" INT NOT NULL REFERENCES "user" ("id") ON DELETE CASCADE
 );
 COMMENT ON COLUMN "order"."status" IS 'PENDING: 1\nPAID: 2';

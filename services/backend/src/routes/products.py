@@ -1,14 +1,12 @@
 from typing import List
 
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, HTTPException
 from tortoise.contrib.fastapi import HTTPNotFoundError
 from tortoise.exceptions import DoesNotExist
 
 import src.crud.products as crud
-from src.auth.jwthandler import get_current_user
 from src.schemas.products import ProductSchema, UpdateProduct
 from src.schemas.token import Status
-from src.schemas.users import UserOutSchema
 
 router = APIRouter()
 
@@ -32,34 +30,31 @@ async def get_single_product(product_id: int) -> ProductSchema:
         )
 
 
-@router.post("/product", response_model=ProductSchema, dependencies=[Depends(get_current_user)])
+@router.post("/product", response_model=ProductSchema)
 async def create_product(
-        product: ProductSchema, current_user: UserOutSchema = Depends(get_current_user)
+        product: ProductSchema
 ) -> ProductSchema:
-    return await crud.create_product(product, current_user)
+    return await crud.create_product(product)
 
 
 @router.patch(
     "/product/{product_id}",
-    dependencies=[Depends(get_current_user)],
     response_model=ProductSchema,
     responses={404: {"model": HTTPNotFoundError}},
 )
 async def update_product(
         product_id: int,
         product: UpdateProduct,
-        current_user: UserOutSchema = Depends(get_current_user),
 ):
-    return await crud.update_product(product_id, product, current_user)
+    return await crud.update_product(product_id, product)
 
 
 @router.delete(
     "/product/{product_id}",
     response_model=Status,
     responses={404: {"model": HTTPNotFoundError}},
-    dependencies=[Depends(get_current_user)],
 )
 async def delete_order(
-        product_id: int, current_user: UserOutSchema = Depends(get_current_user)
+        product_id: int
 ):
-    return await crud.delete_product(product_id, current_user)
+    return await crud.delete_product(product_id)
