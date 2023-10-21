@@ -19,8 +19,8 @@ router = APIRouter()
     response_model=List[OrderOutSchema],
     dependencies=[Depends(get_current_user)],
 )
-async def get_order():
-    return await crud.get_order()
+async def get_all_orders():
+    return await crud.show_all_orders()
 
 
 @router.get(

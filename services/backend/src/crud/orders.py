@@ -6,7 +6,7 @@ from src.schemas.orders import OrderOutSchema
 from src.schemas.token import Status
 
 
-async def get_Order():
+async def show_all_orders():
     return await OrderOutSchema.from_queryset(Order.all())
 
 

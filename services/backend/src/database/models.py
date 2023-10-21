@@ -53,7 +53,7 @@ class Order(models.Model):
 
     id = fields.IntField(pk=True)
     status = fields.IntEnumField(Status)
-    services = fields.ForeignKeyField("models.Product", related_name="products.py")
+    services = fields.ForeignKeyField("models.Product", related_name="products")
     user = fields.ForeignKeyField("models.User", related_name="orders")
     created_at = fields.DatetimeField(auto_now_add=True)
     modified_at = fields.DatetimeField(auto_now=True)
