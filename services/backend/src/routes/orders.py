@@ -15,7 +15,7 @@ router = APIRouter()
 
 
 @router.get(
-    "/order",
+    "/orders",
     response_model=List[OrderOutSchema],
     dependencies=[Depends(get_current_user)],
 )

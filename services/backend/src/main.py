@@ -5,7 +5,6 @@ from tortoise import Tortoise
 from src.database.register import register_tortoise
 from src.database.config import TORTOISE_ORM
 
-
 # enable schemas to read relationship between models
 Tortoise.init_models(["src.database.models"], "models")
 
@@ -20,7 +19,7 @@ app = FastAPI()
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://0.0.0.0:5000"],
+    allow_origins=["http://0.0.0.0:5000", "http://127.0.0.1:5000", "http://localhost:3000"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
