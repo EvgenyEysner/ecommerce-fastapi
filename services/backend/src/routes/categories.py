@@ -31,9 +31,7 @@ async def get_single_product(category_id: int) -> CategorySchema:
 
 
 @router.post("/category", response_model=CategorySchema)
-async def create_product(
-        category: CategorySchema
-) -> CategorySchema:
+async def create_product(category: CategorySchema) -> CategorySchema:
     return await crud.create_category(category)
 
 
@@ -43,8 +41,8 @@ async def create_product(
     responses={404: {"model": HTTPNotFoundError}},
 )
 async def update_category(
-        category_id: int,
-        category: UpdateCategory,
+    category_id: int,
+    category: UpdateCategory,
 ):
     return await crud.update_category(category_id, category)
 
@@ -54,7 +52,5 @@ async def update_category(
     response_model=Status,
     responses={404: {"model": HTTPNotFoundError}},
 )
-async def delete_category(
-        category_id: int
-):
+async def delete_category(category_id: int):
     return await crud.delete_category(category_id)

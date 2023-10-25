@@ -31,9 +31,7 @@ async def get_single_product(product_id: int) -> ProductSchema:
 
 
 @router.post("/product", response_model=ProductSchema)
-async def create_product(
-        product: ProductSchema
-) -> ProductSchema:
+async def create_product(product: ProductSchema) -> ProductSchema:
     return await crud.create_product(product)
 
 
@@ -43,8 +41,8 @@ async def create_product(
     responses={404: {"model": HTTPNotFoundError}},
 )
 async def update_product(
-        product_id: int,
-        product: UpdateProduct,
+    product_id: int,
+    product: UpdateProduct,
 ):
     return await crud.update_product(product_id, product)
 
@@ -54,7 +52,5 @@ async def update_product(
     response_model=Status,
     responses={404: {"model": HTTPNotFoundError}},
 )
-async def delete_order(
-        product_id: int
-):
+async def delete_order(product_id: int):
     return await crud.delete_product(product_id)

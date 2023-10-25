@@ -59,7 +59,9 @@ async def login(user: OAuth2PasswordRequestForm = Depends()):
 
 
 @router.get(
-    "/users/whoami", response_model=UserOutSchema, dependencies=[Depends(get_current_user)]
+    "/users/whoami",
+    response_model=UserOutSchema,
+    dependencies=[Depends(get_current_user)],
 )
 async def read_users_me(current_user: UserOutSchema = Depends(get_current_user)):
     return current_user

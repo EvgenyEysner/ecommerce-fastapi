@@ -11,6 +11,7 @@ class User(models.Model):
     modified_at = fields.DatetimeField(auto_now=True)
     is_admin = fields.BooleanField(default=False)
 
+
 class Category(models.Model):
     id = fields.IntField(pk=True)
     name = fields.CharField(max_length=255)
@@ -40,7 +41,6 @@ class Product(models.Model):
     price = fields.DecimalField(max_digits=10, decimal_places=2, default=0.00)
     review = fields.CharField(max_length=500, null=True)
     image = fields.CharField(max_length=255, null=True)
-
 
     def __str__(self):
         return f"{self.name}, {self.quantity}, {self.price} on {self.created_at}"
