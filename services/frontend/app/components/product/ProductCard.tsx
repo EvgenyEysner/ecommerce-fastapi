@@ -17,6 +17,9 @@ export const ProductCard: any = () => {
     product.id
   })
 
+  let reviews = products.map((product: any) => {
+    product.reviews
+  })
   const Allproducts = () => {
     api.productsList().then(res => {
       setProducts(res)
@@ -28,8 +31,8 @@ export const ProductCard: any = () => {
   }, [])
   const router = useRouter()
 
-  // const productRating = data.data.reviews.reduce((accumulator: number, item: any) => item.rating + accumulator, 0)
-  //   / data.data.reviews.length
+  // const productRating = reviews.reduce((accumulator: number, item: any) => item.rating + accumulator, 0)
+  //   / reviews.length
   return (<>
     {products.map((product: any) => (
       <div key={id}

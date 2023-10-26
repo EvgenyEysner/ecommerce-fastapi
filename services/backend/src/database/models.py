@@ -21,11 +21,21 @@ class Category(models.Model):
 
 
 class Image(models.Model):
-    pass
+    id = fields.IntField(pk=True)
+    name = fields.CharField(max_length=64)
+    src = fields.CharField(max_length=128)
+
+    def __str__(self):
+        return f"{self.name}, {self.src}"
 
 
 class Review(models.Model):
-    pass
+    id = fields.IntField(pk=True)
+    text = fields.TextField(unique=False)
+    owner = fields.OneToOneField("models.User", related_name="user_reviews")
+
+    def __str__(self):
+        return f"{self.owner}, {self.text}"
 
 
 class Product(models.Model):
@@ -47,8 +57,8 @@ class Product(models.Model):
     on_stock = fields.BooleanField(default=True)
     brand = fields.CharField(max_length=64, null=True)
     price = fields.DecimalField(max_digits=10, decimal_places=2, default=0.00)
-    review = fields.ForeignKeyField("models.Review", related_name="review")
-    image = fields.ForeignKeyField("models.Image", related_name="image")
+    reviews = fields.ForeignKeyField("models.Review", related_name="review")
+    images = fields.ForeignKeyField("models.Image", related_name="image")
 
     def __str__(self):
         return f"{self.name}, {self.quantity}, {self.price} on {self.created_at}"

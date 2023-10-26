@@ -13,7 +13,7 @@ import 'from src.routes import users, orders, products, category' must be after 
 why?
 https://stackoverflow.com/questions/65531387/tortoise-orm-for-python-no-returns-relations-of-entities-pyndantic-fastapi
 """
-from src.routes import users, orders, products, categories
+from src.routes import users, orders, products, categories, reviews, images
 
 app = FastAPI()
 
@@ -32,6 +32,8 @@ app.include_router(users.router)
 app.include_router(orders.router)
 app.include_router(categories.router)
 app.include_router(products.router)
+app.include_router(reviews.router)
+# app.include_router(images.router)
 
 register_tortoise(app, config=TORTOISE_ORM, generate_schemas=False)
 
