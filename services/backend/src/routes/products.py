@@ -5,7 +5,7 @@ from tortoise.contrib.fastapi import HTTPNotFoundError
 from tortoise.exceptions import DoesNotExist
 
 import src.crud.products as crud
-from src.schemas.products import ProductSchema, UpdateProduct
+from src.schemas.products import ProductInSchema, UpdateProduct, ProductOutSchema
 from src.schemas.token import Status
 
 router = APIRouter()
@@ -13,14 +13,14 @@ router = APIRouter()
 
 @router.get(
     "/products",
-    response_model=List[ProductSchema],
+    response_model=List[ProductOutSchema],
 )
 async def show_products():
     return await crud.get_products()
 
 
-@router.get("/product/{product_id}", response_model=ProductSchema)
-async def get_single_product(product_id: int) -> ProductSchema:
+@router.get("/product/{product_id}", response_model=ProductOutSchema)
+async def get_single_product(product_id: int) -> ProductOutSchema:
     try:
         return await crud.get_product(product_id)
     except DoesNotExist:
@@ -30,14 +30,14 @@ async def get_single_product(product_id: int) -> ProductSchema:
         )
 
 
-@router.post("/product", response_model=ProductSchema)
-async def create_product(product: ProductSchema) -> ProductSchema:
+@router.post("/product", response_model=ProductInSchema)
+async def create_product(product: ProductInSchema) -> ProductInSchema:
     return await crud.create_product(product)
 
 
 @router.patch(
     "/product/{product_id}",
-    response_model=ProductSchema,
+    response_model=ProductInSchema,
     responses={404: {"model": HTTPNotFoundError}},
 )
 async def update_product(

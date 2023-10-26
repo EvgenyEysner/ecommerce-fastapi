@@ -3,7 +3,22 @@ from pydantic import BaseModel
 
 from src.database.models import Product
 
-ProductSchema = pydantic_model_creator(Product, name="Product")
+ProductInSchema = pydantic_model_creator(
+    Product, name="ProductIn", exclude_readonly=True
+)
+ProductOutSchema = pydantic_model_creator(
+    Product,
+    name="Product",
+    exclude=(
+        "modified_at",
+        "ordered_by.user.password",
+        "ordered_by.user.created_at",
+        "ordered_by.user.modified_at",
+        "product_reviews.user.password"
+        "product_reviews.user.created_at"
+        "product_reviews.user.modified_at",
+    ),
+)
 
 
 class UpdateProduct(BaseModel):
