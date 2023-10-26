@@ -20,7 +20,7 @@ async def show_categories():
 
 
 @router.get("/category/{category_id}", response_model=CategorySchema)
-async def get_single_product(category_id: int) -> CategorySchema:
+async def get_single_category(category_id: int) -> CategorySchema:
     try:
         return await crud.get_category(category_id)
     except DoesNotExist:
@@ -31,7 +31,7 @@ async def get_single_product(category_id: int) -> CategorySchema:
 
 
 @router.post("/category", response_model=CategorySchema)
-async def create_product(category: CategorySchema) -> CategorySchema:
+async def add_category(category: CategorySchema) -> CategorySchema:
     return await crud.create_category(category)
 
 

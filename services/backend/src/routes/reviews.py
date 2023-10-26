@@ -6,7 +6,8 @@ from tortoise.exceptions import DoesNotExist
 
 import src.crud.review as crud
 from src.schemas.reviews import ReviewSchema, UpdateReview
-from src.schemas.token import Status
+
+# from src.schemas.token import Status
 
 router = APIRouter()
 
@@ -15,12 +16,12 @@ router = APIRouter()
     "/reviews",
     response_model=List[ReviewSchema],
 )
-async def show_products():
+async def show_reviews():
     return await crud.get_reviews()
 
 
 @router.get("/review/{review_id}", response_model=ReviewSchema)
-async def get_single_review(review_id: int) -> ReviewSchema:
+async def get_review(review_id: int) -> ReviewSchema:
     try:
         return await crud.get_review(review_id)
     except DoesNotExist:
@@ -40,17 +41,17 @@ async def create_reviews(review: ReviewSchema) -> ReviewSchema:
     response_model=ReviewSchema,
     responses={404: {"model": HTTPNotFoundError}},
 )
-async def update_product(
+async def update_review(
     review_id: int,
     review: UpdateReview,
 ):
     return await crud.update_review(review_id, review)
 
 
-@router.delete(
-    "/review/{review_id}",
-    response_model=Status,
-    responses={404: {"model": HTTPNotFoundError}},
-)
-async def delete_order(review_id: int):
-    return await crud.delete_product(review_id)
+# @router.delete(
+#     "/review/{review_id}",
+#     response_model=Status,
+#     responses={404: {"model": HTTPNotFoundError}},
+# )
+# async def delete_review(review_id: int):
+#     return await crud.delete_review(review_id)

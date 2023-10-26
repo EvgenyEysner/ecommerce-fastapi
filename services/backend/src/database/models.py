@@ -20,24 +20,6 @@ class Category(models.Model):
         return self.name
 
 
-class Image(models.Model):
-    id = fields.IntField(pk=True)
-    name = fields.CharField(max_length=64)
-    src = fields.CharField(max_length=128)
-
-    def __str__(self):
-        return f"{self.name}, {self.src}"
-
-
-class Review(models.Model):
-    id = fields.IntField(pk=True)
-    text = fields.TextField(unique=False)
-    owner = fields.OneToOneField("models.User", related_name="user_reviews")
-
-    def __str__(self):
-        return f"{self.owner}, {self.text}"
-
-
 class Product(models.Model):
     # class SERVICES(str, Enum):
     #     PAYMENT_TAXI_ORDERS = "Оплата полученных заказов от службы заказа такси"
@@ -57,8 +39,6 @@ class Product(models.Model):
     on_stock = fields.BooleanField(default=True)
     brand = fields.CharField(max_length=64, null=True)
     price = fields.DecimalField(max_digits=10, decimal_places=2, default=0.00)
-    reviews = fields.ForeignKeyField("models.Review", related_name="review")
-    images = fields.ForeignKeyField("models.Image", related_name="image")
 
     def __str__(self):
         return f"{self.name}, {self.quantity}, {self.price} on {self.created_at}"
@@ -71,10 +51,30 @@ class Order(models.Model):
 
     id = fields.IntField(pk=True)
     status = fields.IntEnumField(Status)
-    services = fields.ForeignKeyField("models.Product", related_name="products")
+    services = fields.ForeignKeyField("models.Product", related_name="ordered_by")
     user = fields.ForeignKeyField("models.User", related_name="orders")
     created_at = fields.DatetimeField(auto_now_add=True)
     modified_at = fields.DatetimeField(auto_now=True)
 
     def __str__(self):
         return f"{self.user}, {self.services}, {self.status} on {self.created_at}"
+
+
+class Image(models.Model):
+    id = fields.IntField(pk=True)
+    name = fields.CharField(max_length=64)
+    src = fields.CharField(max_length=128)
+    product = fields.ForeignKeyField("models.Product", related_name="images")
+
+    def __str__(self):
+        return f"{self.product}, {self.name}, {self.src}"
+
+
+class Review(models.Model):
+    id = fields.IntField(pk=True)
+    text = fields.TextField(unique=False)
+    owner = fields.ForeignKeyField("models.User", related_name="reviews")
+    product = fields.ForeignKeyField("models.Product", related_name="product_reviews")
+
+    def __str__(self):
+        return f"{self.product}, {self.owner}, {self.text}"

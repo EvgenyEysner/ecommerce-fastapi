@@ -52,5 +52,5 @@ async def update_product(
     response_model=Status,
     responses={404: {"model": HTTPNotFoundError}},
 )
-async def delete_order(product_id: int):
+async def delete_product(product_id: int):
     return await crud.delete_product(product_id)
