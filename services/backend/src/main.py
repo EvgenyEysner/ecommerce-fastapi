@@ -1,9 +1,10 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.staticfiles import StaticFiles
 from tortoise import Tortoise
 
-from src.database.register import register_tortoise
 from src.database.config import TORTOISE_ORM
+from src.database.register import register_tortoise
 
 # enable schemas to read relationship between models
 Tortoise.init_models(["src.database.models"], "models")
@@ -16,6 +17,9 @@ https://stackoverflow.com/questions/65531387/tortoise-orm-for-python-no-returns-
 from src.routes import users, orders, products, categories, reviews, images
 
 app = FastAPI()
+
+# app.mount("static", StaticFiles(directory="images", check_dir=True), name="static")
+# app.mount("/images", StaticFiles(directory="images", html=True), name="images")
 
 app.add_middleware(
     CORSMiddleware,
@@ -33,7 +37,7 @@ app.include_router(orders.router)
 app.include_router(categories.router)
 app.include_router(products.router)
 app.include_router(reviews.router)
-# app.include_router(images.router)
+app.include_router(images.router)
 
 register_tortoise(app, config=TORTOISE_ORM, generate_schemas=False)
 

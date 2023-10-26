@@ -13,15 +13,12 @@ export const ProductCard: any = () => {
   const api = useApiHelper();
   const [products, setProducts]: any = useState([]);
 
-  const id = products.map((product: any) => {
-    product.id
-  })
-
-  let reviews = products.map((product: any) => {
-    product.reviews
+  let data_reviews = products.map((product: any) => {
+    console.log('DATA', product.product_reviews)
   })
   const Allproducts = () => {
     api.productsList().then(res => {
+      console.log('Product', res)
       setProducts(res)
     })
   }
@@ -31,12 +28,12 @@ export const ProductCard: any = () => {
   }, [])
   const router = useRouter()
 
-  // const productRating = reviews.reduce((accumulator: number, item: any) => item.rating + accumulator, 0)
-  //   / reviews.length
+  const productRating = data_reviews.reduce((accumulator: number, item: any) => item.rating + accumulator, 0)
+    / data_reviews.length
   return (<>
     {products.map((product: any) => (
-      <div key={id}
-        onClick={() => router.push(`/product/${id}`)}
+      <div key={product.id}
+        onClick={() => router.push(`/product/${product.id}`)}
         className='
       col-span-1
       cursor-pointer border-[1.2px]
@@ -60,10 +57,10 @@ export const ProductCard: any = () => {
           <div>
             {truncateText(product.name)}
           </div>
-          {/*<div>*/}
-          {/*  <Rating value={productRating} readOnly/>*/}
-          {/*</div>*/}
-          <div>{product.review.length} Отзывов</div>
+          <div>
+            <Rating value={productRating} readOnly />
+          </div>
+          <div>{product.product_reviews.length} Отзывов</div>
           <div className='font-semibold'>{formatPrice(product.price)}</div>
         </div>
       </div>
