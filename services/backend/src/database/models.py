@@ -1,5 +1,6 @@
 from tortoise import fields, models
 from enum import Enum, IntEnum
+from tortoise.validators import MaxValueValidator
 
 
 class User(models.Model):
@@ -73,6 +74,7 @@ class Image(models.Model):
 class Review(models.Model):
     id = fields.IntField(pk=True)
     text = fields.TextField(unique=False)
+    rating = fields.IntField(default=1, validators=[MaxValueValidator(max_value=5)])
     owner = fields.ForeignKeyField("models.User", related_name="reviews")
     product = fields.ForeignKeyField("models.Product", related_name="product_reviews")
 

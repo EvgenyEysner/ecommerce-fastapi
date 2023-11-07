@@ -46,6 +46,7 @@ COMMENT ON COLUMN "order"."status" IS 'PENDING: 1\nPAID: 2';
 CREATE TABLE IF NOT EXISTS "review" (
     "id" SERIAL NOT NULL PRIMARY KEY,
     "text" TEXT NOT NULL,
+    "rating" INT NOT NULL  DEFAULT 1,
     "owner_id" INT NOT NULL REFERENCES "user" ("id") ON DELETE CASCADE,
     "product_id" INT NOT NULL REFERENCES "product" ("id") ON DELETE CASCADE
 );

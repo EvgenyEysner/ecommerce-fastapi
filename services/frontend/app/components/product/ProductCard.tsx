@@ -28,8 +28,8 @@ export const ProductCard: any = () => {
   }, [])
   const router = useRouter()
 
-  const productRating = data_reviews.reduce((accumulator: number, item: any) => item.rating + accumulator, 0)
-    / data_reviews.length
+  // const productRating = data_reviews.reduce((accumulator: number, item: any) => item.rating + accumulator, 0)
+  //   / data_reviews.length
   return (<>
     {products.map((product: any) => (
       <div key={product.id}
@@ -47,19 +47,19 @@ export const ProductCard: any = () => {
       '>
         <div className='flex flex-col items-center w-full gap-1'>
           <div className='aspect-square overflow-hidden relative w-full'>
-            {/*<Image*/}
-            {/*  src={product.image}*/}
-            {/*  alt={product.name}*/}
-            {/*  fill*/}
-            {/*  className='object-contain'*/}
-            {/*/>*/}
+            <Image
+              src={product.src}
+              alt={product.name}
+              fill
+              className='object-contain'
+            />
           </div>
           <div>
             {truncateText(product.name)}
           </div>
-          <div>
-            <Rating value={productRating} readOnly />
-          </div>
+          {/*<div>*/}
+          {/*  <Rating value={productRating} readOnly />*/}
+          {/*</div>*/}
           <div>{product.product_reviews.length} Отзывов</div>
           <div className='font-semibold'>{formatPrice(product.price)}</div>
         </div>
