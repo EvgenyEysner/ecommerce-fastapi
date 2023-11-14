@@ -19,7 +19,7 @@ async def show_products():
     return await crud.get_products()
 
 
-@router.get("/product/{product_id}", response_model=ProductOutSchema)
+@router.get("/products/{product_id}", response_model=ProductOutSchema)
 async def get_single_product(product_id: int) -> ProductOutSchema:
     try:
         return await crud.get_product(product_id)

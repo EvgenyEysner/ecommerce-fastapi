@@ -17,7 +17,16 @@ export interface IParams {
 }
 
 export interface ProductCardProps {
-  data: any
+  data: any[]
+  // id: number,
+  // name: string,
+  // description: string,
+  // category: string,
+  // brand: string,
+  // // "selectedImg": { ...res.images[0] },
+  // on_stock: boolean,
+  // quantity: number,
+  // price: number
 }
 
 export interface ProductDetailsProps {
@@ -95,7 +104,8 @@ export type CartProductType = {
   description: string,
   category: string,
   brand: string,
-  selectedImg: SelectedImgType,
+  // selectedImg: SelectedImgType,
+  on_stock: boolean,
   quantity: number,
   price: number
 

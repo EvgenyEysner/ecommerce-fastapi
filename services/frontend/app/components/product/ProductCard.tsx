@@ -1,30 +1,30 @@
 'use client'
 
-import { ProductCardProps } from "@/types";
-import React, { useEffect, useState } from "react";
+import React, {useEffect, useState} from "react";
 import Image from "next/image";
-import { truncateText } from "@/utils/truncateText";
-import { formatPrice } from "@/utils/formatPrice";
-import { Rating } from "@mui/material";
-import { useRouter } from "next/navigation";
+import {truncateText} from "@/utils/truncateText";
+import {formatPrice} from "@/utils/formatPrice";
+import {Rating} from "@mui/material";
+import {useRouter} from "next/navigation";
 import useApiHelper from "@/api/Api";
 
 export const ProductCard: any = () => {
   const api = useApiHelper();
   const [products, setProducts]: any = useState([]);
 
-  let data_reviews = products.map((product: any) => {
-    console.log('DATA', product.product_reviews)
+  const productRating = products.map((product: any) => {
+    product.product_reviews.reduce((accumulator: number, item: any) => item.rating + accumulator)
+    / product.product_reviews.length
   })
-  const Allproducts = () => {
+
+  const allProducts = () => {
     api.productsList().then(res => {
-      console.log('Product', res)
       setProducts(res)
     })
   }
 
   useEffect(() => {
-    Allproducts();
+    allProducts();
   }, [])
   const router = useRouter()
 
@@ -33,8 +33,8 @@ export const ProductCard: any = () => {
   return (<>
     {products.map((product: any) => (
       <div key={product.id}
-        onClick={() => router.push(`/product/${product.id}`)}
-        className='
+           onClick={() => router.push(`/product/${product.id}`)}
+           className='
       col-span-1
       cursor-pointer border-[1.2px]
       border-slate-200
@@ -48,7 +48,7 @@ export const ProductCard: any = () => {
         <div className='flex flex-col items-center w-full gap-1'>
           <div className='aspect-square overflow-hidden relative w-full'>
             <Image
-              src={product.src}
+              src={product.images.src}
               alt={product.name}
               fill
               className='object-contain'
@@ -57,9 +57,9 @@ export const ProductCard: any = () => {
           <div>
             {truncateText(product.name)}
           </div>
-          {/*<div>*/}
-          {/*  <Rating value={productRating} readOnly />*/}
-          {/*</div>*/}
+          <div>
+            <Rating value={productRating} readOnly/>
+          </div>
           <div>{product.product_reviews.length} Отзывов</div>
           <div className='font-semibold'>{formatPrice(product.price)}</div>
         </div>
