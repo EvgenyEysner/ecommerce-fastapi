@@ -11,7 +11,6 @@ const Product = ({params}: { params: IParams }) => {
   const api = useApiHelper();
   const allProducts: any = (params) => {
     api.productDetails(params.productId).then(res => {
-      console.log("DATA: ", res.product_reviews)
       const data = {
         "id": res.id,
         "name": res.name,
@@ -40,11 +39,9 @@ const Product = ({params}: { params: IParams }) => {
         <ProductDetails product={product}/>
       </Container>
       <div className='flex flex-col mt-20 gap-4'>
-        <div>RatingList</div>
         <ListRating product={product} />
       </div>
     </div>
   )
 }
-
 export default Product
