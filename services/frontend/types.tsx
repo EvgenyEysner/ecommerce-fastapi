@@ -17,11 +17,11 @@ export interface IParams {
 }
 
 export interface ProductCardProps {
-  data: any[]
+  products: any[]
   // id: number,
   // name: string,
   // description: string,
-  // category: string,
+  // category: string,data
   // brand: string,
   // // "selectedImg": { ...res.images[0] },
   // on_stock: boolean,

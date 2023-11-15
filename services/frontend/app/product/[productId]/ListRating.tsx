@@ -6,7 +6,6 @@ import { Rating } from "@mui/material"
 import { Avatar } from "@/app/components/product/Avatar"
 
 export const ListRating: React.FC<ListRatingProps> = ({ product }) => {
-  console.log("DATA: ", product)
   return (
     <div>
       <Heading title="Отзывы" />

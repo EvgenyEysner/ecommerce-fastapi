@@ -1,35 +1,15 @@
-'use client'
-
-import React, {useEffect, useState} from "react";
+import React, {useState} from "react";
 import Image from "next/image";
 import {truncateText} from "@/utils/truncateText";
 import {formatPrice} from "@/utils/formatPrice";
 import {Rating} from "@mui/material";
 import {useRouter} from "next/navigation";
-import useApiHelper from "@/api/Api";
+import {ProductCardProps} from "@/types";
 
-export const ProductCard: any = () => {
-  const api = useApiHelper();
-  const [products, setProducts]: any = useState([]);
-
-  const productRating = products.map((product: any) => {
-    product.product_reviews.reduce((accumulator: number, item: any) => item.rating + accumulator)
-    / product.product_reviews.length
-  })
-
-  const allProducts = () => {
-    api.productsList().then(res => {
-      setProducts(res)
-    })
-  }
-
-  useEffect(() => {
-    allProducts();
-  }, [])
+export const ProductCard: React.FC<ProductCardProps> = ({products}) => {
+  // const productRating = products?.product_reviews?.reduce((accumulator: number, item: any) => item.rating + accumulator, 0) / products?.product_reviews?.length
+  console.log("DATA: ", products)
   const router = useRouter()
-
-  // const productRating = data_reviews.reduce((accumulator: number, item: any) => item.rating + accumulator, 0)
-  //   / data_reviews.length
   return (<>
     {products.map((product: any) => (
       <div key={product.id}
@@ -58,7 +38,7 @@ export const ProductCard: any = () => {
             {truncateText(product.name)}
           </div>
           <div>
-            <Rating value={productRating} readOnly/>
+            {/*<Rating value={productRating} readOnly/>*/}
           </div>
           <div>{product.product_reviews.length} Отзывов</div>
           <div className='font-semibold'>{formatPrice(product.price)}</div>
