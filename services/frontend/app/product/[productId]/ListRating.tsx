@@ -4,13 +4,16 @@ import React from "react"
 import moment from "moment"
 import { Rating } from "@mui/material"
 import { Avatar } from "@/app/components/product/Avatar"
+import { useAppSelector } from "@/app/store/types"
 
-export const ListRating: React.FC<ListRatingProps> = ({ product }) => {
+export const ListRating: React.FC = () => {
+  const product = useAppSelector(state => state.productsReducer.product) 
+  
   return (
     <div>
       <Heading title="Отзывы" />
       <div className='text-sm'>
-        {product.product_reviews && product.product_reviews.map((review: any) => {
+        {product?.product_reviews && product.product_reviews.map((review: any) => {
           return (
             <div key={review.id} className='max-w-[300px]'>
               <div className='flex gap-2 items-center'>

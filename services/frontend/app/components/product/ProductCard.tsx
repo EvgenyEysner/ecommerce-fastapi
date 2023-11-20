@@ -1,18 +1,31 @@
-import React, {useState} from "react";
+'use client'
+import React, {useEffect, useState} from "react";
 import Image from "next/image";
 import {truncateText} from "@/utils/truncateText";
 import {formatPrice} from "@/utils/formatPrice";
 import {Rating} from "@mui/material";
 import {useRouter} from "next/navigation";
-import {ProductCardProps} from "@/types";
+import {ProductCardProps} from "@/types"
+import { useAppSelector } from "@/app/store/types";
 
-export const ProductCard: React.FC<ProductCardProps> = ({products}) => {
-  // const productRating = products?.product_reviews?.reduce((accumulator: number, item: any) => item.rating + accumulator, 0) / products?.product_reviews?.length
-  console.log("DATA: ", products)
+export const ProductCard: React.FC<ProductCardProps> = ({productId}) => {
+  const [rating, setRating] = useState(0)
   const router = useRouter()
-  return (<>
-    {products.map((product: any) => (
-      <div key={product.id}
+
+  const product = useAppSelector(state => state.productsReducer.products.find(el => el.id === productId))
+
+  useEffect(() => {
+    if (product.product_reviews) {
+      const productRating = product.product_reviews.reduce(
+        (accumulator: number, item: any) => item.rating + accumulator,
+        0
+      ) / product.product_reviews.length;
+      setRating(productRating);
+    }
+  }, []);
+
+  return (
+      <div key={product?.id}
            onClick={() => router.push(`/product/${product.id}`)}
            className='
       col-span-1
@@ -38,12 +51,11 @@ export const ProductCard: React.FC<ProductCardProps> = ({products}) => {
             {truncateText(product.name)}
           </div>
           <div>
-            {/*<Rating value={productRating} readOnly/>*/}
+            <Rating value={rating} readOnly/>
           </div>
-          <div>{product.product_reviews.length} Отзывов</div>
+          <div>{product?.product_reviews.length} Отзывов</div>
           <div className='font-semibold'>{formatPrice(product.price)}</div>
         </div>
       </div>
-    ))}
-  </>)
+  )
 }

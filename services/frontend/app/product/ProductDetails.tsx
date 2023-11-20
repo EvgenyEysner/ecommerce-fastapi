@@ -3,59 +3,39 @@ import { CartProductType, ProductDetailsProps, SelectedImgType } from "@/types"
 import React, { useCallback, useState, useEffect } from "react";
 import { Rating } from "@mui/material";
 import { SetColor } from "@/app/components/product/SetColor";
-import { SetQuantity } from "@/app/components/product/SetQuantity";
 import { CartButton } from "../components/button/CartButton";
 import { ProductImage } from "@/app/components/product/ProductImage";
 import { useCart } from "@/hooks/useCart";
 import { MdCheckCircle } from "react-icons/md";
 import { useRouter } from "next/navigation";
+import { Horizontal } from "../components/line/Horizontal";
+import { useAppSelector } from "../store/types";
 
 
-export const ProductDetails: React.FC<ProductDetailsProps> = ({ product }) => {
+export const ProductDetails: React.FC = () => {
+  const router = useRouter()
+
+  const product = useAppSelector(state => state.productsReducer.product) 
+   
   const productRating = product?.product_reviews?.reduce((accumulator: number, item: any) => item.rating + accumulator, 0)
     / product?.product_reviews?.length
   const { handleAddProductToCart, cartProducts } = useCart()
+  
   const [isProductInCart, setProductToCart] = useState(false)
-  const [cartProduct, setCartProduct] = useState<CartProductType>(
-    {
-      id: product?.id,
-      name: product?.name,
-      description: product?.description,
-      category: product?.category,
-      brand: product?.brand,
-      // selectedImg: { ...product?.images[0] },
-      on_stock: product?.on_stock,
-      quantity: 1,
-      price: product?.price
-    }
-  )
+  const [cartCounter, setCartCounter] = useState(1)
 
-  const router = useRouter()
+  useEffect(() => {
+    let foundProductInCart = false;
 
-  const Horizontal = () => {
-    return (
-      <hr className='w-[30%] my-2' />
-    )
-  }
-
-  const handleQtyIncrease = useCallback(() => {
-    setCartProduct((prev) => {
-      return {
-        ...prev, quantity: ++prev.quantity
+    cartProducts?.forEach((element: any) => {
+      if (element.id === product?.id) {
+        foundProductInCart = true;
       }
-    })
-  }, [])
+    });
 
-  const handleQtyDecrease = useCallback(() => {
-    if (cartProduct.quantity === 1) {
-      return
-    }
-    setCartProduct((prev) => {
-      return {
-        ...prev, quantity: --prev.quantity
-      }
-    })
-  }, [cartProduct])
+    setProductToCart(foundProductInCart);
+  }, [cartProducts, product])
+
 
   // const handleColorSelect = useCallback((value: SelectedImgType) => {
   //   setCartProduct(prev => {
@@ -63,17 +43,6 @@ export const ProductDetails: React.FC<ProductDetailsProps> = ({ product }) => {
   //   })
   // }, [cartProduct.selectedImg])
 
-
-  // useEffect(() => {
-  //   setProductToCart(false)
-  //   if (cartProducts) {
-  //     const existingIndex = cartProducts.findIndex((item) => item.id === product.id)
-  //
-  //     if (existingIndex > -1) {
-  //       setProductToCart(true)
-  //     }
-  //   }
-  // }, [cartProducts])
   return (
     <div className='grid grid-cols-1 md:grid-cols-2 gap-12'>
       {/*<ProductImage cartProduct={cartProduct} product={product} handleColorSelect={handleColorSelect} />*/}
@@ -91,7 +60,7 @@ export const ProductDetails: React.FC<ProductDetailsProps> = ({ product }) => {
         <Horizontal />
         <div>
           <span className='font-semibold'>Категория: </span>
-          {product?.category}
+          {product?.category?.name}
         </div>
         <div>
           <span className='font-semibold'>Brand: </span>
@@ -114,22 +83,47 @@ export const ProductDetails: React.FC<ProductDetailsProps> = ({ product }) => {
             </div>
           </> :
           <>
-            {/*<SetColor*/}
+            {/* <SetColor*/}
             {/*  cartProduct={cartProduct}*/}
             {/*  images={product.images}*/}
             {/*  handleColorSelect={handleColorSelect}*/}
             {/*/>*/}
-            {/*<Horizontal />*/}
-            <SetQuantity
-              cartProduct={cartProduct}
-              handleQtyIncrease={handleQtyIncrease}
-              handleQtyDecrease={handleQtyDecrease}
-            />
+            {/*<Horizontal /> */}
+            <div className='flex gap-8 items-center'>
+              <div className='font-semibold'>
+                Кол-во:
+              </div>
+              <div className='flex gap-4 items-center text-base'>
+                <button 
+                  onClick={() => setCartCounter(prev => {
+                    if (prev > 1) {
+                      return --prev
+                    }
+                    return prev
+                  })} 
+                  className='border-[1.2px] border-slate-300 p-2 rounded'
+                >
+                  -
+                </button>
+                <div>{cartCounter}</div>
+                <button 
+                  onClick={() => setCartCounter(prev => {
+                    if (prev < product.quantity) {
+                      return ++prev
+                    }
+                    return prev
+                  })} 
+                  className='border-[1.2px] border-slate-300 p-2 rounded'
+                >
+                  +
+                </button>
+              </div>
+            </div>
             <Horizontal />
             <div className='max-w-[300px]'>
               <CartButton
                 label={"Добавить в корзину"}
-                onClick={() => handleAddProductToCart(cartProduct)}
+                onClick={() => handleAddProductToCart({...product, quantity: cartCounter})}
               />
             </div>
           </>}

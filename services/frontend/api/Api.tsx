@@ -6,7 +6,7 @@ const useApiHelper = () => {
 
   const api = {
     productsList: (params = {}) => axios.get(`/products`, params),
-    productDetails: (id: string, params = {}) => axios.get(`product/${id}`, params),
+    productDetails: (id: string, params = {}) => axios.get(`products/${id}`, params),
     // createProduct: (id: number, data: any, params = {}) => axios.post(`products/${id}`, params),
     // deleteProduct: (id: number, params = {}) => axios.delete(`api/v1/delete-student/${id}`, params),
     // updateProduct: (id: number, data: any, params = {}) => axios.put(`api/v1/student-update/${id}/`, data, params)

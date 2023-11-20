@@ -4,6 +4,7 @@ import { UseFormRegister, FieldValues, FieldErrors } from "react-hook-form"
 
 
 // -------------------- Interfaces ------------------------- //
+// props
 export interface ContainerProps {
   children: React.ReactNode
 }
@@ -12,25 +13,12 @@ export interface FooterListProps {
   children: React.ReactNode
 }
 
-export interface IParams {
-  productId?: string;
-}
-
 export interface ProductCardProps {
-  products: any[]
-  // id: number,
-  // name: string,
-  // description: string,
-  // category: string,data
-  // brand: string,
-  // // "selectedImg": { ...res.images[0] },
-  // on_stock: boolean,
-  // quantity: number,
-  // price: number
+  productId: number | string
 }
 
 export interface ProductDetailsProps {
-  product: any
+  productId: string | number
 }
 
 export interface SetColorProps {
@@ -104,7 +92,7 @@ export type CartProductType = {
   description: string,
   category: string,
   brand: string,
-  // selectedImg: SelectedImgType,
+  selectedImg: SelectedImgType,
   on_stock: boolean,
   quantity: number,
   price: number
@@ -115,6 +103,35 @@ export type SelectedImgType = {
   color: string,
   colorCode: string,
   image: string
+}
+
+export interface IProductParams {
+  productId?: string;
+}
+
+export interface IOrder {
+  id?: number | string,
+  status?: number | string,
+  created_at?: Date,
+  modified_at?: Date
+}
+
+export interface IUser {
+  id?: number | string,
+  username?: string,
+  full_name?: string,
+  password?: string,
+  created_at?: Date,
+  modified_at?: Date,
+  is_admin?: boolean,
+  orders?: IOrder[]
+}
+
+export interface IProductCardPreview {
+  id: number | string,
+  text?: string,
+  rating?: number,
+  owner: IUser
 }
 
 export type CartContextType = {
