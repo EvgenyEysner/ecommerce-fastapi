@@ -9,7 +9,7 @@ import useApiHelper from "@/api/Api";
 const Product = ({params}: { params: IParams }) => {
   const [product, setProduct]: any = useState({});
   const api = useApiHelper();
-  const allProducts: any = (params) => {
+  const allProducts = ({params}: any) => {
     api.productDetails(params.productId).then(res => {
       const data = {
         "id": res.id,
