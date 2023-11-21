@@ -5,7 +5,7 @@ from tortoise.validators import MaxValueValidator
 
 class User(models.Model):
     id = fields.IntField(pk=True)
-    username = fields.CharField(max_length=20, unique=True)
+    email = fields.CharField(max_length=255, unique=True)
     full_name = fields.CharField(max_length=50, null=True)
     password = fields.CharField(max_length=128, null=True)
     created_at = fields.DatetimeField(auto_now_add=True)
@@ -52,13 +52,13 @@ class Order(models.Model):
 
     id = fields.IntField(pk=True)
     status = fields.IntEnumField(Status)
-    services = fields.ForeignKeyField("models.Product", related_name="ordered_by")
+    product = fields.ForeignKeyField("models.Product", related_name="ordered_by")
     user = fields.ForeignKeyField("models.User", related_name="orders")
     created_at = fields.DatetimeField(auto_now_add=True)
     modified_at = fields.DatetimeField(auto_now=True)
 
     def __str__(self):
-        return f"{self.user}, {self.services}, {self.status} on {self.created_at}"
+        return f"{self.user}, {self.product}, {self.status} on {self.created_at}"
 
 
 class Image(models.Model):
@@ -77,6 +77,7 @@ class Review(models.Model):
     rating = fields.IntField(default=1, validators=[MaxValueValidator(max_value=5)])
     owner = fields.ForeignKeyField("models.User", related_name="reviews")
     product = fields.ForeignKeyField("models.Product", related_name="product_reviews")
+    created_at = fields.DatetimeField(auto_now_add=True)
 
     def __str__(self):
         return f"{self.product}, {self.owner}, {self.text}"
