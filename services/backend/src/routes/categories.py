@@ -14,12 +14,17 @@ router = APIRouter()
 @router.get(
     "/categories",
     response_model=List[CategorySchema],
+    summary="Все категории",
 )
 async def show_categories():
     return await crud.get_categories()
 
 
-@router.get("/category/{category_id}", response_model=CategorySchema)
+@router.get(
+    "/category/{category_id}",
+    response_model=CategorySchema,
+    summary="Категории по ID",
+)
 async def get_single_category(category_id: int) -> CategorySchema:
     try:
         return await crud.get_category(category_id)
@@ -30,7 +35,11 @@ async def get_single_category(category_id: int) -> CategorySchema:
         )
 
 
-@router.post("/category", response_model=CategorySchema)
+@router.post(
+    "/category",
+    response_model=CategorySchema,
+    summary="Создать категорию",
+)
 async def add_category(category: CategorySchema) -> CategorySchema:
     return await crud.create_category(category)
 
@@ -39,6 +48,7 @@ async def add_category(category: CategorySchema) -> CategorySchema:
     "/category/{category_id}",
     response_model=CategorySchema,
     responses={404: {"model": HTTPNotFoundError}},
+    summary="Редактировать категорию",
 )
 async def update_category(
     category_id: int,
@@ -51,6 +61,7 @@ async def update_category(
     "/category/{category_id}",
     response_model=Status,
     responses={404: {"model": HTTPNotFoundError}},
+    summary="Удалить категорию",
 )
 async def delete_category(category_id: int):
     return await crud.delete_category(category_id)

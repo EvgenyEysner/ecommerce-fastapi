@@ -20,7 +20,9 @@ from utils.helpers import is_valid_email
 router = APIRouter()
 
 
-@router.post("/register", response_model=UserOutSchema)
+@router.post(
+    "/register", response_model=UserOutSchema, summary="Регистрация пользователя"
+)
 async def create_user(user: UserInSchema) -> UserOutSchema:
     if not is_valid_email(user.email):
         raise HTTPException(
@@ -30,7 +32,7 @@ async def create_user(user: UserInSchema) -> UserOutSchema:
     return await crud.create_user(user)
 
 
-@router.post("/login")
+@router.post("/login", summary="Login")
 async def login(user: OAuth2PasswordRequestForm = Depends()):
     user = await validate_user(user)
 
@@ -65,6 +67,7 @@ async def login(user: OAuth2PasswordRequestForm = Depends()):
     "/users/whoami",
     response_model=UserOutSchema,
     dependencies=[Depends(get_current_user)],
+    summary="Данные текущего пользователя",
 )
 async def read_users_me(current_user: UserOutSchema = Depends(get_current_user)):
     return current_user
@@ -75,6 +78,7 @@ async def read_users_me(current_user: UserOutSchema = Depends(get_current_user))
     response_model=Status,
     responses={404: {"model": HTTPNotFoundError}},
     dependencies=[Depends(get_current_user)],
+    summary="Удалить текущего пользователя",
 )
 async def delete_user(
     user_id: int, current_user: UserOutSchema = Depends(get_current_user)

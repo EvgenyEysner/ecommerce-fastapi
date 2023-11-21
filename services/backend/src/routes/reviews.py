@@ -12,15 +12,12 @@ from src.schemas.reviews import ReviewSchema, UpdateReview
 router = APIRouter()
 
 
-@router.get(
-    "/reviews",
-    response_model=List[ReviewSchema],
-)
+@router.get("/reviews", response_model=List[ReviewSchema], summary="Все отзывы")
 async def show_reviews():
     return await crud.get_reviews()
 
 
-@router.get("/review/{review_id}", response_model=ReviewSchema)
+@router.get("/review/{review_id}", response_model=ReviewSchema, summary="Отзыв по ID")
 async def get_review(review_id: int) -> ReviewSchema:
     try:
         return await crud.get_review(review_id)
@@ -31,7 +28,7 @@ async def get_review(review_id: int) -> ReviewSchema:
         )
 
 
-@router.post("/review", response_model=ReviewSchema)
+@router.post("/review", response_model=ReviewSchema, summary="Создать отзыв")
 async def create_reviews(review: ReviewSchema) -> ReviewSchema:
     return await crud.create_review(review)
 
@@ -40,6 +37,7 @@ async def create_reviews(review: ReviewSchema) -> ReviewSchema:
     "/review/{review_id}",
     response_model=ReviewSchema,
     responses={404: {"model": HTTPNotFoundError}},
+    summary="Редактировать отзыв",
 )
 async def update_review(
     review_id: int,

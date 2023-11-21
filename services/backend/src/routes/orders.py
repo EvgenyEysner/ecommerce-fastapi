@@ -18,6 +18,7 @@ router = APIRouter()
     "/orders",
     response_model=List[OrderOutSchema],
     dependencies=[Depends(get_current_user)],
+    summary="Все заказы",
 )
 async def get_all_orders():
     return await crud.show_all_orders()
@@ -27,6 +28,7 @@ async def get_all_orders():
     "/order/{order_id}",
     response_model=OrderOutSchema,
     dependencies=[Depends(get_current_user)],
+    summary="Заказ по ID",
 )
 async def get_order(order_id: int) -> OrderOutSchema:
     try:
@@ -39,7 +41,10 @@ async def get_order(order_id: int) -> OrderOutSchema:
 
 
 @router.post(
-    "/order", response_model=OrderOutSchema, dependencies=[Depends(get_current_user)]
+    "/order",
+    response_model=OrderOutSchema,
+    dependencies=[Depends(get_current_user)],
+    summary="Создать заказ",
 )
 async def create_order(
     order: OrderInSchema, current_user: UserOutSchema = Depends(get_current_user)
@@ -52,6 +57,7 @@ async def create_order(
     dependencies=[Depends(get_current_user)],
     response_model=OrderOutSchema,
     responses={404: {"model": HTTPNotFoundError}},
+    summary="Редактировать заказ",
 )
 async def update_order(
     order_id: int,
@@ -66,6 +72,7 @@ async def update_order(
     response_model=Status,
     responses={404: {"model": HTTPNotFoundError}},
     dependencies=[Depends(get_current_user)],
+    summary="Удалить заказ",
 )
 async def delete_order(
     order_id: int, current_user: UserOutSchema = Depends(get_current_user)
