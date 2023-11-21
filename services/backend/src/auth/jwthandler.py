@@ -9,10 +9,9 @@ from fastapi.security.utils import get_authorization_scheme_param
 from jose import JWTError, jwt
 from tortoise.exceptions import DoesNotExist
 
+from src.database.models import User
 from src.schemas.token import TokenData
 from src.schemas.users import UserOutSchema
-from src.database.models import User
-
 
 SECRET_KEY = os.environ.get("SECRET_KEY")
 ALGORITHM = "HS256"
@@ -75,16 +74,16 @@ async def get_current_user(token: str = Depends(security)):
 
     try:
         payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
-        username: str = payload.get("sub")
-        if username is None:
+        email: str = payload.get("sub")
+        if email is None:
             raise credentials_exception
-        token_data = TokenData(username=username)
+        token_data = TokenData(email=email)
     except JWTError:
         raise credentials_exception
 
     try:
         user = await UserOutSchema.from_queryset_single(
-            User.get(username=token_data.username)
+            User.get(email=token_data.email)
         )
     except DoesNotExist:
         raise credentials_exception

@@ -4,26 +4,29 @@ from fastapi import APIRouter, Depends, HTTPException, status
 from fastapi.encoders import jsonable_encoder
 from fastapi.responses import JSONResponse
 from fastapi.security import OAuth2PasswordRequestForm
-
 from tortoise.contrib.fastapi import HTTPNotFoundError
 
 import src.crud.users as crud
-from src.auth.users import validate_user
-from src.schemas.token import Status
-from src.schemas.users import UserInSchema, UserOutSchema
-
 from src.auth.jwthandler import (
     create_access_token,
     get_current_user,
     ACCESS_TOKEN_EXPIRE_MINUTES,
 )
-
+from src.auth.users import validate_user
+from src.schemas.token import Status
+from src.schemas.users import UserInSchema, UserOutSchema
+from utils.helpers import is_valid_email
 
 router = APIRouter()
 
 
 @router.post("/register", response_model=UserOutSchema)
 async def create_user(user: UserInSchema) -> UserOutSchema:
+    if not is_valid_email(user.email):
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Email is not valid",
+        )
     return await crud.create_user(user)
 
 
@@ -34,13 +37,13 @@ async def login(user: OAuth2PasswordRequestForm = Depends()):
     if not user:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Incorrect username or password",
+            detail="Incorrect email or password",
             headers={"WWW-Authenticate": "Bearer"},
         )
 
     access_token_expires = timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
     access_token = create_access_token(
-        data={"sub": user.username}, expires_delta=access_token_expires
+        data={"sub": user.email}, expires_delta=access_token_expires
     )
     token = jsonable_encoder(access_token)
     content = {"message": "You've successfully logged in. Welcome back!"}
@@ -51,7 +54,7 @@ async def login(user: OAuth2PasswordRequestForm = Depends()):
         httponly=True,
         max_age=1800,
         expires=1800,
-        samesite="Lax",
+        samesite="lax",
         secure=False,
     )
 

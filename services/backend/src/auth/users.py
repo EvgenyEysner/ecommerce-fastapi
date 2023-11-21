@@ -6,7 +6,6 @@ from tortoise.exceptions import DoesNotExist
 from src.database.models import User
 from src.schemas.users import UserDatabaseSchema
 
-
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
 
@@ -18,8 +17,8 @@ def get_password_hash(password):
     return pwd_context.hash(password)
 
 
-async def get_user(username: str):
-    return await UserDatabaseSchema.from_queryset_single(User.get(username=username))
+async def get_user(email: str):
+    return await UserDatabaseSchema.from_queryset_single(User.get(email=email))
 
 
 async def validate_user(user: OAuth2PasswordRequestForm = Depends()):
