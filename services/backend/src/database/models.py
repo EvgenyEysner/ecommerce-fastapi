@@ -36,7 +36,7 @@ class Product(models.Model):
     description = fields.CharField(max_length=1000, null=True)
     created_at = fields.DatetimeField(auto_now_add=True)
     modified_at = fields.DatetimeField(auto_now=True)
-    quantity = fields.IntField(default=10)
+    quantity = fields.IntField(default=1)
     on_stock = fields.BooleanField(default=True)
     brand = fields.CharField(max_length=64, null=True)
     price = fields.DecimalField(max_digits=10, decimal_places=2, default=0.00)
