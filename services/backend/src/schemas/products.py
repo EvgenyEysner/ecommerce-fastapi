@@ -14,9 +14,9 @@ ProductOutSchema = pydantic_model_creator(
         "ordered_by.user.password",
         "ordered_by.user.created_at",
         "ordered_by.user.modified_at",
-        "product_reviews.user.password"
-        "product_reviews.user.created_at"
-        "product_reviews.user.modified_at",
+        "product_reviews.owner.password",
+        "product_reviews.owner.created_at",
+        "product_reviews.owner.modified_at",
     ),
 )
 
