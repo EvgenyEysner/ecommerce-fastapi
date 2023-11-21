@@ -4,7 +4,20 @@ from tortoise.contrib.pydantic import pydantic_model_creator
 from src.database.models import Order
 
 OrderInSchema = pydantic_model_creator(
-    Order, name="OrderIn", exclude=("user_id",), exclude_readonly=True
+    Order,
+    name="OrderIn",
+    exclude=(
+        "id",
+        "product.product_reviews",
+        "product.category",
+        "product.description",
+        "product.on_stock",
+        "product.brand",
+        "product.category_id",
+        "product.images",
+        "user",
+        "user_id",
+    ),
 )
 OrderOutSchema = pydantic_model_creator(
     Order,
