@@ -10,12 +10,14 @@ bcrypt = "==4.0.1"
 passlib = "==1.7.4"
 fastapi = "==0.88.0"
 python-jose = "==3.3.0"
-python-multipart = "==0.0.5"
+python-multipart = "==0.0.6"
 psycopg2-binary = "==2.9.7"
 tortoise-orm = "==0.19.2"
 uvicorn = "==0.20.0"
 black = "*"
 flake8 = "*"
+aiofiles = "==23.2.1"
+pillow = "==10.1.0"
 
 [dev-packages]
 

@@ -29,8 +29,8 @@ async def get_single_product(product_id: int) -> ProductOutSchema:
         )
 
 
-@router.post("/product", response_model=ProductInSchema, summary="Создать продукт")
-async def create_product(product: ProductInSchema) -> ProductInSchema:
+@router.post("/product", response_model=ProductOutSchema, summary="Создать продукт")
+async def create_product(product: ProductInSchema) -> ProductOutSchema:
     return await crud.create_product(product)
 
 

@@ -21,6 +21,18 @@ class Category(models.Model):
         return self.name
 
 
+class Image(models.Model):
+    id = fields.IntField(pk=True)
+    name = fields.CharField(max_length=64)
+    src = fields.CharField(max_length=128)
+    product: fields.ManyToManyRelation["Product"] = fields.ManyToManyField(
+        "models.Product", related_name="images", through="product_image"
+    )
+
+    def __str__(self):
+        return f"{self.name}, {self.src}"
+
+
 class Product(models.Model):
     # class SERVICES(str, Enum):
     #     PAYMENT_TAXI_ORDERS = "Оплата полученных заказов от службы заказа такси"
@@ -40,6 +52,7 @@ class Product(models.Model):
     on_stock = fields.BooleanField(default=True)
     brand = fields.CharField(max_length=64, null=True)
     price = fields.DecimalField(max_digits=10, decimal_places=2, default=0.00)
+    images: fields.ManyToManyRelation[Image]
 
     def __str__(self):
         return f"{self.name}, {self.quantity}, {self.price} on {self.created_at}"
@@ -59,16 +72,6 @@ class Order(models.Model):
 
     def __str__(self):
         return f"{self.user}, {self.product}, {self.status} on {self.created_at}"
-
-
-class Image(models.Model):
-    id = fields.IntField(pk=True)
-    name = fields.CharField(max_length=64)
-    src = fields.CharField(max_length=128)
-    product = fields.ForeignKeyField("models.Product", related_name="images")
-
-    def __str__(self):
-        return f"{self.product}, {self.name}, {self.src}"
 
 
 class Review(models.Model):
