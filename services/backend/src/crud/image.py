@@ -27,7 +27,9 @@ async def get_image(image_id) -> ImageSchema:
 #     return await ImageSchema.from_tortoise_orm(image_obj)
 
 
-async def create_image(product_id: int, file: UploadFile = File(...)):
+async def create_image(
+    product_id: int, image, file: UploadFile = File(...)
+) -> ImageSchema:
     print(file.content_type)
     _, ext = os.path.splitext(file.filename)
     content = await file.read()
@@ -42,7 +44,7 @@ async def create_image(product_id: int, file: UploadFile = File(...)):
     img.save(file_name)
 
     product = await Product.get(id=product_id)
-    await product.images.add(file_name)
+    await product.images.add(path_to_img)
     await product.save()
 
     file_url = "".join("127.0.0.1:5000", path_to_img)
