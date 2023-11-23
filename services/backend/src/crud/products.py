@@ -14,7 +14,7 @@ async def get_product(product_id) -> ProductOutSchema:
     return await ProductOutSchema.from_queryset_single(Product.get(id=product_id))
 
 
-async def create_product(product) -> ProductInSchema:
+async def create_product(product) -> ProductOutSchema:
     product_dict = product.dict(exclude_unset=True)
     product_obj = await Product.create(**product_dict)
     return await ProductInSchema.from_tortoise_orm(product_obj)

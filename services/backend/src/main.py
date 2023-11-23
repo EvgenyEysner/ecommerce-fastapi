@@ -18,8 +18,7 @@ from src.routes import users, orders, products, categories, reviews, images
 
 app = FastAPI()
 
-# app.mount("static", StaticFiles(directory="images", check_dir=True), name="static")
-# app.mount("/images", StaticFiles(directory="images", html=True), name="images")
+app.mount("/static", StaticFiles(directory="static", check_dir=True), name="static")
 
 app.add_middleware(
     CORSMiddleware,
