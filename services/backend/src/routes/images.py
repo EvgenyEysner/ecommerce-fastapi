@@ -1,6 +1,6 @@
 from typing import List
 
-from fastapi import APIRouter, HTTPException, UploadFile, File
+from fastapi import APIRouter, HTTPException
 
 # from tortoise.contrib.fastapi import HTTPNotFoundError
 from tortoise.exceptions import DoesNotExist
@@ -34,6 +34,11 @@ async def get_image(image_id: int) -> ImageSchema:
         )
 
 
-@router.post("/image/product/{id}", response_model=ImageSchema)
-async def create_image(product_id: int, file: UploadFile = File(...)) -> ImageSchema:
-    return await crud.create_image(product_id, file)
+@router.post("/image", response_model=ImageSchema)
+async def create_image(image: ImageSchema) -> ImageSchema:
+    return await crud.create_image(image)
+
+
+# @router.post("/image/product/{id}", response_model=ImageSchema)
+# async def create_image(product_id: int, file: UploadFile = File(...)) -> ImageSchema:
+#     return await crud.create_image(product_id, file)

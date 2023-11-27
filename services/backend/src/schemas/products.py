@@ -4,12 +4,8 @@ from tortoise.contrib.pydantic import pydantic_model_creator
 from src.database.models import Product
 
 ProductInSchema = pydantic_model_creator(
-    Product,
-    name="ProductIn",
-    # exclude_readonly=True
-    exclude=("ordered_by", "product_reviews", "category", "images"),
+    Product, name="ProductIn", exclude_readonly=True
 )
-
 ProductOutSchema = pydantic_model_creator(
     Product,
     name="Product",

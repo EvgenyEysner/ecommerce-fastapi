@@ -1,5 +1,6 @@
+from enum import IntEnum
+
 from tortoise import fields, models
-from enum import Enum, IntEnum
 from tortoise.validators import MaxValueValidator
 
 
@@ -25,9 +26,7 @@ class Image(models.Model):
     id = fields.IntField(pk=True)
     name = fields.CharField(max_length=64)
     src = fields.CharField(max_length=128)
-    product: fields.ManyToManyRelation["Product"] = fields.ManyToManyField(
-        "models.Product", related_name="images", through="product_image"
-    )
+    product = fields.ForeignKeyField("models.Product", related_name="images")
 
     def __str__(self):
         return f"{self.name}, {self.src}"
@@ -52,7 +51,6 @@ class Product(models.Model):
     on_stock = fields.BooleanField(default=True)
     brand = fields.CharField(max_length=64, null=True)
     price = fields.DecimalField(max_digits=10, decimal_places=2, default=0.00)
-    images: fields.ManyToManyRelation[Image]
 
     def __str__(self):
         return f"{self.name}, {self.quantity}, {self.price} on {self.created_at}"

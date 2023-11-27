@@ -7,11 +7,6 @@ async def upgrade(db: BaseDBAsyncClient) -> str:
     "id" SERIAL NOT NULL PRIMARY KEY,
     "name" VARCHAR(255) NOT NULL
 );
-CREATE TABLE IF NOT EXISTS "image" (
-    "id" SERIAL NOT NULL PRIMARY KEY,
-    "name" VARCHAR(64) NOT NULL,
-    "src" VARCHAR(128) NOT NULL
-);
 CREATE TABLE IF NOT EXISTS "product" (
     "id" SERIAL NOT NULL PRIMARY KEY,
     "name" VARCHAR(255) NOT NULL,
@@ -23,6 +18,12 @@ CREATE TABLE IF NOT EXISTS "product" (
     "brand" VARCHAR(64),
     "price" DECIMAL(10,2) NOT NULL  DEFAULT 0,
     "category_id" INT NOT NULL REFERENCES "category" ("id") ON DELETE CASCADE
+);
+CREATE TABLE IF NOT EXISTS "image" (
+    "id" SERIAL NOT NULL PRIMARY KEY,
+    "name" VARCHAR(64) NOT NULL,
+    "src" VARCHAR(128) NOT NULL,
+    "product_id" INT NOT NULL REFERENCES "product" ("id") ON DELETE CASCADE
 );
 CREATE TABLE IF NOT EXISTS "user" (
     "id" SERIAL NOT NULL PRIMARY KEY,
@@ -55,10 +56,6 @@ CREATE TABLE IF NOT EXISTS "aerich" (
     "version" VARCHAR(255) NOT NULL,
     "app" VARCHAR(100) NOT NULL,
     "content" JSONB NOT NULL
-);
-CREATE TABLE IF NOT EXISTS "product_image" (
-    "image_id" INT NOT NULL REFERENCES "image" ("id") ON DELETE CASCADE,
-    "product_id" INT NOT NULL REFERENCES "product" ("id") ON DELETE CASCADE
 );"""
 
 
