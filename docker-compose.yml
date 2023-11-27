@@ -15,6 +15,8 @@ services:
     command: uvicorn src.main:app --reload --host 0.0.0.0 --port 5000
     depends_on:
       - db
+    networks:
+      - backend
 
   frontend:
     build:
@@ -27,6 +29,8 @@ services:
     volumes:
       - ./services/frontend/app:/frontend/app
       - ./services/frontend/public:/frontend/public
+    networks:
+      - backend
 
   db:
     image: library/postgres:11.8-alpine
@@ -40,6 +44,12 @@ services:
       PGDATA: /data/postgres
     volumes:
       - postgres_data:/var/lib/postgresql/data/
+    networks:
+      - backend
+
+networks:
+  backend:
+    driver: bridge
 
 volumes:
   postgres_data:

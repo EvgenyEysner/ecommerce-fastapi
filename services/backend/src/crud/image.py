@@ -27,15 +27,14 @@ async def get_image(image_id) -> ImageSchema:
 #     return await ImageSchema.from_tortoise_orm(image_obj)
 
 
-async def create_image(
-    product_id: int, image, file: UploadFile = File(...)
-) -> ImageSchema:
-    print(file.content_type)
+async def create_image(product_id: int, file: UploadFile = File(...)) -> ImageSchema:
+    product = await Product.get(id=product_id)
+
     _, ext = os.path.splitext(file.filename)
     content = await file.read()
     if file.content_type not in ["image/jpeg", "image/png"]:
         raise HTTPException(status_code=406, detail="Only .jpeg or .png  files allowed")
-    file_name = f"{secrets.token_hex(9)}{ext}"
+    file_name = f"{product.name}_{product_id}{ext}"
     async with aiofiles.open(os.path.join("static/images", file_name), "wb") as f:
         await f.write(content)
     path_to_img = os.path.abspath(file_name)
@@ -43,13 +42,14 @@ async def create_image(
     img = Image.open(file_name)
     img.save(file_name)
 
-    product = await Product.get(id=product_id)
-    await product.images.add(path_to_img)
+    image_obj = await Image.create(scr=path_to_img, name=file_name)
+
+    product.images = path_to_img
     await product.save()
 
-    file_url = "".join("127.0.0.1:5000", path_to_img)
+    # file_url = "".join("127.0.0.1:5000", path_to_img)
 
-    return file_url
+    return await ImageSchema.from_tortoise_orm(image_obj)
 
 
 # async def update_review(review_id, review) -> ReviewSchema:
