@@ -2,9 +2,9 @@ import React, {useEffect, useState} from "react";
 import Link from "next/link";
 import Image from "next/image";
 import {Rating} from "@mui/material";
-import { useAppSelector } from "@/store/types";
-import { formatPrice } from "@/helpers/formatPrice";
-import { truncateText } from "@/helpers/truncateText";
+import {useAppSelector} from "@/store/types";
+import {formatPrice} from "@/helpers/formatPrice";
+import {truncateText} from "@/helpers/truncateText";
 
 interface ProductCardProps {
   id: number
@@ -25,10 +25,10 @@ export const ProductCard: React.FC<ProductCardProps> = ({id}) => {
   }, []);
 
   return (
-      <Link  
-        href={`/product/${product?.id}`} 
-        key={product?.id}
-        className='
+    <Link
+      href={`/product/${product?.id}`}
+      key={product?.id}
+      className='
           col-span-1
           cursor-pointer border-[1.2px]
           border-slate-200
@@ -39,24 +39,24 @@ export const ProductCard: React.FC<ProductCardProps> = ({id}) => {
           text-center
           text-sm
       '>
-        <div className='flex flex-col items-center w-full gap-1'>
-          <div className='aspect-square overflow-hidden relative w-full'>
-            {/* <Image
-              src={product?.images[0]?.src || ''}
-              alt={product?.name || ''}
-              fill
-              className='object-contain'
-            /> */}
-          </div>
-          <div>
-            {truncateText(product?.name || '')}
-          </div>
-          <div>
-            <Rating value={rating} readOnly/>
-          </div>
-          {/* <div>{product?.product_reviews.length} Отзывов</div> */}
-          <div className='font-semibold'>{formatPrice(product?.price || 0)}</div>
+      <div className='flex flex-col items-center w-full gap-1'>
+        <div className='aspect-square overflow-hidden relative w-full'>
+          <Image
+            src={product?.images[0]?.src || ''}
+            alt={product?.name || ''}
+            fill
+            className='object-contain'
+          />
         </div>
-      </Link>
+        <div>
+          {truncateText(product?.name || '')}
+        </div>
+        <div>
+          <Rating value={rating} readOnly/>
+        </div>
+        <div>{product?.product_reviews.length} Отзывов</div>
+        <div className='font-semibold'>{formatPrice(product?.price || 0)}</div>
+      </div>
+    </Link>
   )
 }

@@ -44,7 +44,7 @@ async def create_image(product_id: int, file: UploadFile = File(...)) -> ImageSc
     async with aiofiles.open(file_path, "wb") as file:
         await file.write(content)
     product = await Product.get(id=product_id)
-    path_to_img = "127.0.0.1:5000/" + file_path
+    path_to_img = "http://127.0.0.1:5000/" + file_path
 
     image_dict = {"name": file_name, "src": path_to_img, "product": product}
     image = await Image(**image_dict)
