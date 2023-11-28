@@ -32,7 +32,7 @@ async def get_image(image_id: int) -> ImageSchema:
         )
 
 
-@router.post("/upload_image/product/{product_id}", response_model=ImageSchema)
+@router.post("/upload_image/product/{product_id}")
 async def create_image(product_id: int, file: UploadFile = File(...)) -> ImageSchema:
     _, ext = os.path.splitext(file.filename)
     content = await file.read()
