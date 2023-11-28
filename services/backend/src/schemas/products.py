@@ -6,6 +6,7 @@ from src.database.models import Product
 ProductInSchema = pydantic_model_creator(
     Product, name="ProductIn", exclude_readonly=True
 )
+
 ProductOutSchema = pydantic_model_creator(
     Product,
     name="Product",

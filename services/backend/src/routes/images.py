@@ -1,16 +1,14 @@
+import os
+import secrets
 from typing import List
 
-from fastapi import APIRouter, HTTPException
-
-# from tortoise.contrib.fastapi import HTTPNotFoundError
+import aiofiles
+from fastapi import APIRouter, HTTPException, UploadFile, File, status
 from tortoise.exceptions import DoesNotExist
 
 import src.crud.image as crud
+from src.database.models import Image, Product
 from src.schemas.images import ImageSchema
-
-# from fastapi.responses import FileResponse
-# from pathlib import Path
-
 
 router = APIRouter()
 
@@ -34,11 +32,22 @@ async def get_image(image_id: int) -> ImageSchema:
         )
 
 
-@router.post("/image", response_model=ImageSchema)
-async def create_image(image: ImageSchema) -> ImageSchema:
-    return await crud.create_image(image)
+@router.post("/upload_image/product/{product_id}", response_model=ImageSchema)
+async def create_image(product_id: int, file: UploadFile = File(...)) -> ImageSchema:
+    _, ext = os.path.splitext(file.filename)
+    content = await file.read()
 
+    if file.content_type not in ["image/jpeg", "image/png"]:
+        raise HTTPException(status_code=406, detail="Only .jpeg or .png  files allowed")
+    file_name = f"{secrets.token_hex(5)}_{product_id}{ext}"
+    file_path = os.path.join("static/images", file_name)
+    async with aiofiles.open(file_path, "wb") as file:
+        await file.write(content)
+    product = await Product.get(id=product_id)
+    path_to_img = "127.0.0.1:5000/" + file_path
 
-# @router.post("/image/product/{id}", response_model=ImageSchema)
-# async def create_image(product_id: int, file: UploadFile = File(...)) -> ImageSchema:
-#     return await crud.create_image(product_id, file)
+    image_dict = {"name": file_name, "src": path_to_img, "product": product}
+    image = await Image(**image_dict)
+    await image.save()
+
+    return {"Status": status.HTTP_201_CREATED, "URL": path_to_img}
