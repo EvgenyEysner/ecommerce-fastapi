@@ -6,17 +6,7 @@ from src.database.models import Order
 OrderInSchema = pydantic_model_creator(
     Order,
     name="OrderIn",
-    exclude=(
-        "product.product_reviews",
-        "product.category",
-        "product.description",
-        "product.on_stock",
-        "product.brand",
-        "product.category_id",
-        "product.images",
-        "user",
-        "user_id",
-    ),
+    exclude_readonly=True,
 )
 OrderOutSchema = pydantic_model_creator(
     Order,
