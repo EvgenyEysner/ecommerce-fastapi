@@ -76,13 +76,6 @@ class Order(models.Model):
     created_at = fields.DatetimeField(auto_now_add=True)
     modified_at = fields.DatetimeField(auto_now=True)
 
-    @property
-    def get_total(self):
-        product = Product.get(id=self.product.id).values_list("price")
-        self.total = self.quantity * product.price
-        total = self.total
-        return total
-
     def __str__(self):
         return f"{self.user}, {self.product}, {self.status} on {self.created_at}"
 
