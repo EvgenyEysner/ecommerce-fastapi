@@ -7,11 +7,11 @@ import { useAppSelector } from "@/store/types";
 export const CartCount: React.FC = () => {
   const { cartTotalQty } = useCart();
   const [count, setCount] = useState(cartTotalQty())
-  const flag = useAppSelector(state => state.cartReducer.flag)
+  const cartProducts = useAppSelector(state => state.cartReducer.products)
 
   useEffect(() => {
     setCount(cartTotalQty())
-  }, [flag])
+  }, [cartProducts])
   
   return (
     <Link className='relative cursor-pointer' href='/cart'>

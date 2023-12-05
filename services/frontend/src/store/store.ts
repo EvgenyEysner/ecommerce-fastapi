@@ -21,6 +21,8 @@ const makeStore = () =>
     reducer: rootReducer,
   });
 
+export const store = makeStore();
+
 export type RootState = ReturnType<typeof rootReducer>;
 export type AppStore = ReturnType<typeof makeStore>;
 export type AppState = ReturnType<AppStore["getState"]>;

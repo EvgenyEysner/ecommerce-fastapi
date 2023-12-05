@@ -25,10 +25,10 @@ export const productsSlice = createSlice({
 
   extraReducers: {
     [HYDRATE]: (state, action) => {
-      return {
-        ...state,
-        ...action.payload.products,
-      };
+      if (action.payload.productReducer.products.length === 0)
+        return { ...state };
+
+      state.products = action.payload.productReducer.products;
     },
   },
 });

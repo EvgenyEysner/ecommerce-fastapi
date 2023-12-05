@@ -16,13 +16,13 @@ export const ProductCard: React.FC<ProductCardProps> = ({id}) => {
 
   useEffect(() => {
     if (product) {
-      // const productRating = product.product_reviews.reduce(
-      //   (accumulator: number, item) => item.rating + accumulator,
-      //   0
-      // ) / product.product_reviews.length;
-      // setRating(productRating);
+      const productRating = product.product_reviews.reduce(
+        (accumulator: number, item) => item.rating + accumulator,
+        0
+      ) / product.product_reviews.length;
+      setRating(productRating);
     }
-  }, []);
+  }, [product]);
 
   return (
     <Link

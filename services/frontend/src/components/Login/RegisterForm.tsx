@@ -1,6 +1,6 @@
 import React, { useState } from "react"
 import Link from "next/link"
-import axios from "axios"
+import axios, { AxiosResponse } from "axios"
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form"
 import toast from "react-hot-toast"
 import { AiOutlineGoogle } from "react-icons/ai"
@@ -9,10 +9,19 @@ import { CartButton } from "@/UI/CartButton"
 import { Input } from "@/UI/Input"
 import { validateEmail } from "@/helpers/validateEmail"
 import { validatePassword } from "@/helpers/validatePassword"
+import { useAppDispatch, useAppSelector } from "@/store/types"
+import { IUser } from "@/interfaces/user.interface"
+import { addUser } from "@/store/reducers/UserSlice"
+import { useRouter } from "next/router"
 
 export const RegisterForm = () => {
-
+  const dispatch = useAppDispatch()
   const [isLoading, setIsLoading] = useState(false)
+  const router = useRouter()
+  const user = useAppSelector(state => state.userReducer.user)
+
+  if (user) router.push('/')
+
   const { register, handleSubmit, formState: { errors } } = useForm<FieldValues>({
     defaultValues: {
       name: '',
@@ -23,7 +32,6 @@ export const RegisterForm = () => {
 
   const onSubmit: SubmitHandler<FieldValues> = async (data) => {
     setIsLoading(true)
-    console.log(validateEmail(data.email));
     
     if (!validateEmail(data.email)) {
       setIsLoading(false)
@@ -33,15 +41,16 @@ export const RegisterForm = () => {
     if (validatePassword(data.password) !== true) {
       setIsLoading(false)
       return toast.error(validatePassword(data.password).toString())
-    }
+    }    
 
     try {
-      const res = await axios.post('http://localhost:5000/register', {
-        username: data.email,
+      const res: AxiosResponse<IUser> = await axios.post('http://localhost:5000/register', {
+        email: data.email,
         full_name: data.name,
-        // password: data.password,
-        // "is_admin": false
+        password: data.password,
+        // is_admin: false
       })
+      router.push('/login')
     } catch (e) {
       toast.error('Что-то пошло не так...')
       console.log(e);

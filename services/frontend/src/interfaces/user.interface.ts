@@ -41,10 +41,10 @@ interface IOrderedBy {
   modified_at: string;
 }
 
-interface IOrder {
-  id: number;
+export interface IOrder {
+  id?: number;
   status: number;
   product: IProduct;
-  created_at: string;
-  modified_at: string;
+  created_at?: string;
+  modified_at?: string;
 }

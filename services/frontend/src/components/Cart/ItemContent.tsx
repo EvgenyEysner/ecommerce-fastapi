@@ -2,8 +2,6 @@ import React from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import toast from 'react-hot-toast';
-import { useAppDispatch } from '@/store/types';
-import { cartSlice } from '@/store/reducers/CartSlice';
 import useCart from '@/hooks/useCart';
 import { formatPrice } from '@/helpers/formatPrice';
 import { truncateText } from '@/helpers/truncateText';
@@ -15,8 +13,6 @@ interface ItemContentProps {
 
 export const ItemContent: React.FC<ItemContentProps> = ({ item }) => {
   const { deleteOneProductInCart, decreaseProduct, increaseProduct } = useCart()
-  const dispatch = useAppDispatch()
-  const { incrementFlag } = cartSlice.actions  
 
   return (
     <div className='grid grid-cols-5 text-xs md:text-sm gap-4 border-t-[1.5px] border-slate-200 py-4 items-center'>
@@ -34,7 +30,6 @@ export const ItemContent: React.FC<ItemContentProps> = ({ item }) => {
           <div className='w-[70px]'>
             <button className='text-slate-500 underline' onClick={() => {
               deleteOneProductInCart(item.id)
-              dispatch(incrementFlag())
             }}>
               Удалить
             </button>
@@ -52,7 +47,6 @@ export const ItemContent: React.FC<ItemContentProps> = ({ item }) => {
               onClick={() => {
                 if (item.quantity > 1) {
                   decreaseProduct(item.id)
-                  dispatch(incrementFlag())
                 } else {
                   toast.error('Это минимум ...')
                 }
@@ -66,7 +60,6 @@ export const ItemContent: React.FC<ItemContentProps> = ({ item }) => {
               onClick={() => {
                 if (item.quantity < item.maxQuantity) {
                   increaseProduct(item.id)
-                  dispatch(incrementFlag())
                 } else {
                   toast.error('Вы выбрали максимальное доступное количество этого товара')
                 }

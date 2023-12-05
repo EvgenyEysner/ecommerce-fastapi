@@ -1,16 +1,28 @@
 import React, { useState } from "react"
 import Link from "next/link"
+import { useRouter } from "next/router"
+import axios, { AxiosResponse } from "axios"
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form"
 import { AiOutlineGoogle } from "react-icons/ai"
+import toast from "react-hot-toast"
+
 import { Heading } from "../Product/Heading"
 import { CartButton } from "@/UI/CartButton"
 import { Input } from "@/UI/Input"
-import toast from "react-hot-toast"
-import axios from "axios"
+
 import { validatePassword } from "@/helpers/validatePassword"
 import { validateEmail } from "@/helpers/validateEmail"
 
+import { useAppDispatch } from "@/store/types"
+import { addUser } from "@/store/reducers/UserSlice"
+
+import { IUser } from "@/interfaces/user.interface"
+
+
 export const LoginForm = () => {
+
+  const dispatch = useAppDispatch()
+  const router = useRouter()
 
   const [isLoading, setIsLoading] = useState(false)
   const { register, handleSubmit, formState: { errors } } = useForm<FieldValues>({
@@ -33,13 +45,28 @@ export const LoginForm = () => {
       setIsLoading(false)
       return toast.error(validatePassword(data.password).toString())
     }
-
+    
+    const params = new URLSearchParams();
+    params.append('username', data.email);
+    params.append('password', data.password);
+    
+    const config = {
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+      },
+      withCredentials: true,
+    };
+    
     try {
-      const res = await axios.post('http://localhost:5000/login', {
-        username: data.email,
-        password: data.password,
+      await axios.post('http://localhost:5000/login', params, config);
+
+      const res: AxiosResponse<IUser> = await axios.get('http://localhost:5000/users/whoami', {
+        withCredentials: true,
       })
-      console.log(res);
+
+      dispatch(addUser(res.data))
+      // dispatch(uncheckDataBase())
+      router.push('/')
     } catch (e) {
       toast.error('Что-то пошло не так...')
       console.log(e);

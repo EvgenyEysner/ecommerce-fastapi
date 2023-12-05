@@ -9,4 +9,6 @@ export interface IUseCart {
   increaseProduct(id: number): void;
   clearCart(): void;
   cartTotalAmount(): number;
+  writeToSessionStorage(): void;
+  summationProducts(): void;
 }

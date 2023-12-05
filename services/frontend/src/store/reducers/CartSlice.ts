@@ -3,16 +3,15 @@ import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 import { HYDRATE } from "next-redux-wrapper";
 
 interface CartState {
-  flag: number;
   products: IProductCart[];
+  checkDB: boolean;
   isLoading: boolean;
   error: string;
 }
 
-// flag нужен для отслеживания изменения корзины и ререндера компонентов, в которых используются данные корзины
 const initialState: CartState = {
-  flag: 0,
   products: [],
+  checkDB: false,
   isLoading: false,
   error: "",
 };
@@ -21,23 +20,64 @@ export const cartSlice = createSlice({
   name: "cart",
   initialState,
   reducers: {
-    incrementFlag(state, action: PayloadAction) {
-      ++state.flag;
+    firstAddProductToCart(state, action: PayloadAction<IProductCart[]>) {
+      state.products = action.payload;
     },
     addProductToCart(state, action: PayloadAction<IProductCart>) {
-      state.products.push(action.payload);
+      state.products = state.products.concat(action.payload);
     },
+    deleteProduct(state, action: PayloadAction<number>) {
+      state.products = state.products.filter((el) => el.id !== action.payload);
+    },
+    deleteAllProducts(state, action: PayloadAction) {
+      state.products = [];
+    },
+    incrementOneProduct(state, action: PayloadAction<number>) {
+      const updatedProducts = state.products.map((product) => {
+        if (product.id === action.payload) {
+          return { ...product, quantity: product.quantity + 1 };
+        }
+        return product;
+      });
+
+      state.products = updatedProducts;
+    },
+    decrementOneProduct(state, action: PayloadAction<number>) {
+      const updatedProducts = state.products.map((product) => {
+        if (product.id === action.payload) {
+          return { ...product, quantity: product.quantity - 1 };
+        }
+        return product;
+      });
+
+      state.products = updatedProducts;
+    },
+    // checkDataBase(state, action: PayloadAction) {
+    //   state.checkDB = true;
+    // },
+    // uncheckDataBase(state, action: PayloadAction) {
+    //   state.checkDB = false;
+    // },
   },
 
   extraReducers: {
     [HYDRATE]: (state, action) => {
-      return {
-        ...state,
-        ...action.payload.products,
-      };
+      if (action.payload.cartReducer.products.length === 0) return { ...state };
+
+      // state.checkDB = action.payload.cartReducer.checkDB;
+      state.products = action.payload.cartReducer.products;
     },
   },
 });
 
-export const { addProductToCart } = cartSlice.actions;
+export const {
+  addProductToCart,
+  firstAddProductToCart,
+  deleteProduct,
+  deleteAllProducts,
+  incrementOneProduct,
+  decrementOneProduct,
+  // checkDataBase,
+  // uncheckDataBase,
+} = cartSlice.actions;
 export default cartSlice.reducer;

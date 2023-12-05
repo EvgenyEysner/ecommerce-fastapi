@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { MdArrowBack } from 'react-icons/md';
 import { useAppDispatch, useAppSelector } from '@/store/types';
-import { cartSlice } from '@/store/reducers/CartSlice';
+import { cartSlice, deleteAllProducts } from '@/store/reducers/CartSlice';
 import useCart from '@/hooks/useCart';
 import { IProductCart } from '@/interfaces/product.interface';
 import { formatPrice } from '@/helpers/formatPrice';
@@ -11,19 +11,14 @@ import { ItemContent } from './ItemContent';
 import { CartButton } from '@/UI/CartButton';
 import { useRouter } from 'next/router';
 
-export const CartClient = () => {  
-  const [cartProducts, setCartProducts] = useState<IProductCart[]>([])
-  const flag = useAppSelector(state => state.cartReducer.flag)  
-  const {clearCart, cartTotalAmount} = useCart()
-  const dispatch = useAppDispatch()
-  const { incrementFlag } = cartSlice.actions  
-  const router = useRouter()
+interface CartClientProps {
+  isAuth: boolean
+}
 
-  useEffect(() => {
-    const productsInCart = typeof window !== 'undefined' ? window.sessionStorage.getItem('productsInCart') : null;
-    const products: IProductCart[] = JSON.parse(productsInCart || '[]')
-    setCartProducts(products)
-  }, [flag]) 
+export const CartClient: React.FC<CartClientProps> = ({ isAuth }) => {
+  const {clearCart, cartTotalAmount} = useCart()
+  const router = useRouter()
+  const cartProducts = useAppSelector(state => state.cartReducer.products)
   
   if (cartProducts.length === 0) {
     return (
@@ -48,7 +43,7 @@ export const CartClient = () => {
         <div className='justify-self-end text-transform: uppercase'>Сумма</div>
       </div>
       <div>
-        {cartProducts.map((item) => {
+        {cartProducts.map(item => {
           return (
             <ItemContent key={item.id} item={item} />
           )
@@ -60,10 +55,7 @@ export const CartClient = () => {
             label='Очистить' 
             small 
             outline 
-            onClick={() => {
-              clearCart()
-              dispatch(incrementFlag())
-            }} 
+            onClick={clearCart} 
           />
         </div>
         <div className='text-sm flex gap-1 flex-col items-start'>
@@ -73,7 +65,8 @@ export const CartClient = () => {
           </div>
           <p className='text-slate-500'>Taxes and shipping at checkout</p>
           <CartButton label='Оформить покупку' onClick={() => {
-            router.push('/login');
+            if (!isAuth) router.push('/login')
+            else {}
           }} />
           <Link href={"/"} className='text-slate-500 flex items-center gap-1 mt-2'>
             <MdArrowBack />
