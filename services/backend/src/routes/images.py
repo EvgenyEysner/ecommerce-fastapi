@@ -28,7 +28,7 @@ async def get_image(image_id: int) -> ImageSchema:
     except DoesNotExist:
         raise HTTPException(
             status_code=404,
-            detail="review does not exist",
+            detail="image does not exist",
         )
 
 

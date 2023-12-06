@@ -1,7 +1,8 @@
 from fastapi import HTTPException
 from tortoise.exceptions import DoesNotExist
+from tortoise.expressions import F
 
-from src.database.models import Order
+from src.database.models import Order, Product
 from src.schemas.orders import OrderOutSchema
 from src.schemas.token import Status
 
@@ -28,6 +29,10 @@ async def update_order(order_id, order, current_user) -> OrderOutSchema:
         raise HTTPException(status_code=404, detail=f"Order {order_id} not found")
 
     if db_order.user.id == current_user.id:
+        if order.status == 2:
+            await Product.filter(id=db_order.product.id).update(
+                quantity=(F("quantity") - db_order.quantity)
+            )
         await Order.filter(id=order_id).update(**order.dict(exclude_unset=True))
         return await OrderOutSchema.from_queryset_single(Order.get(id=order_id))
 

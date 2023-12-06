@@ -25,6 +25,10 @@ async def update_product(product_id, product) -> ProductInSchema:
         await ProductInSchema.from_queryset_single(Product.get(id=product_id))
     except DoesNotExist:
         raise HTTPException(status_code=404, detail=f"Product {product_id} not found")
+
+    if product.quantity == 0:
+        await Product.filter(id=product_id).update(on_stock=False)
+
     await Product.filter(id=product_id).update(**product.dict(exclude_unset=True))
 
     return await ProductInSchema.from_queryset_single(Product.get(id=product_id))
