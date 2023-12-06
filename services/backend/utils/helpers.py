@@ -13,6 +13,15 @@ def is_valid_email(email: str):
         return email
 
 
+def is_valid_password(password: str):
+    regex = "((?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[\W]).{8,64})"
+    # pass the regular expression
+    # and the string into the fullmatch() method
+
+    if re.fullmatch(regex, password):
+        return password
+
+
 @dataclass
 class AdditionalUserDataForm:
     email: str = Form()

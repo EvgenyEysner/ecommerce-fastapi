@@ -15,7 +15,7 @@ from src.auth.jwthandler import (
 from src.auth.users import validate_user
 from src.schemas.token import Status
 from src.schemas.users import UserInSchema, UserOutSchema
-from utils.helpers import is_valid_email
+from utils.helpers import is_valid_email, is_valid_password
 
 router = APIRouter()
 
@@ -28,6 +28,13 @@ async def create_user(user: UserInSchema) -> UserOutSchema:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Email is not valid",
+        )
+
+    if not is_valid_password(user.password):
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Password is not valid. \
+            Password must have at least one capital letter, one number and one special character",
         )
     return await crud.create_user(user)
 
