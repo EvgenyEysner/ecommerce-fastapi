@@ -45,7 +45,7 @@ async def delete_order(order_id, current_user) -> Status:
     except DoesNotExist:
         raise HTTPException(status_code=404, detail=f"Order {order_id} not found")
 
-    if db_order.author.id == current_user.id:
+    if db_order.user.id == current_user.id:
         deleted_count = await Order.filter(id=order_id).delete()
         if not deleted_count:
             raise HTTPException(status_code=404, detail=f"Order {order_id} not found")
