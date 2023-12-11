@@ -17,3 +17,4 @@ OrderOutSchema = pydantic_model_creator(
 
 class UpdateOrder(BaseModel):
     status: int
+    quantity: int
