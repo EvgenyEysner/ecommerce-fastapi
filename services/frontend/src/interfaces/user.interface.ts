@@ -45,6 +45,15 @@ export interface IOrder {
   id?: number;
   status: number;
   product: IProduct;
+  user: {
+    id: number | string;
+    email: string;
+    full_name: string;
+    is_admin: boolean;
+    reviews: any[];
+  };
+  quantity: number;
+  total: number;
   created_at?: string;
   modified_at?: string;
 }

@@ -13,16 +13,20 @@ import { Input } from "@/UI/Input"
 import { validatePassword } from "@/helpers/validatePassword"
 import { validateEmail } from "@/helpers/validateEmail"
 
-import { useAppDispatch } from "@/store/types"
+import { useAppDispatch, useAppSelector } from "@/store/types"
 import { addUser } from "@/store/reducers/UserSlice"
 
 import { IUser } from "@/interfaces/user.interface"
+import useCart from "@/hooks/useCart"
 
 
 export const LoginForm = () => {
-
   const dispatch = useAppDispatch()
   const router = useRouter()
+  const user = useAppSelector(state => state.userReducer.user)
+  const { mergeCarts } = useCart()
+
+  if (user) router.push('/')
 
   const [isLoading, setIsLoading] = useState(false)
   const { register, handleSubmit, formState: { errors } } = useForm<FieldValues>({
@@ -34,7 +38,6 @@ export const LoginForm = () => {
 
   const onSubmit: SubmitHandler<FieldValues> = async (data) => {
     setIsLoading(true)
-    console.log(validateEmail(data.email));
     
     if (!validateEmail(data.email)) {
       setIsLoading(false)
@@ -65,7 +68,7 @@ export const LoginForm = () => {
       })
 
       dispatch(addUser(res.data))
-      // dispatch(uncheckDataBase())
+      mergeCarts()
       router.push('/')
     } catch (e) {
       toast.error('Что-то пошло не так...')
@@ -78,7 +81,7 @@ export const LoginForm = () => {
   return (
     <>
       <Heading title='Sign In to E-Shop' />
-      <CartButton outline label='Sign In with Google' icon={AiOutlineGoogle} onClick={() => { }} />
+      {/* <CartButton outline label='Sign In with Google' icon={AiOutlineGoogle} onClick={() => { }} /> */}
       <hr className='bg-slate-300 w-full h-px' />
       <Input
         id='email'

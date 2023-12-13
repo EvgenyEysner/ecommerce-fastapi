@@ -1,10 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import Link from 'next/link';
 import { MdArrowBack } from 'react-icons/md';
-import { useAppDispatch, useAppSelector } from '@/store/types';
-import { cartSlice, deleteAllProducts } from '@/store/reducers/CartSlice';
+import { useAppSelector } from '@/store/types';
 import useCart from '@/hooks/useCart';
-import { IProductCart } from '@/interfaces/product.interface';
 import { formatPrice } from '@/helpers/formatPrice';
 import { Heading } from '../Product/Heading';
 import { ItemContent } from './ItemContent';

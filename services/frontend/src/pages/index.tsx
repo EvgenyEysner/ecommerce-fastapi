@@ -1,5 +1,6 @@
 import {NextPage} from "next";
 import {connect} from 'react-redux';
+
 import {addAllProducts} from "@/store/reducers/ProductsSlice";
 import {AppState, wrapper} from "@/store/store";
 
@@ -8,13 +9,11 @@ import {HomeBanner} from "@/components/HomeBanner";
 import {ProductCard} from "@/components/ProductCard";
 import {RootLayout} from "@/components/RootLayout";
 import {IProduct} from "@/interfaces/product.interface";
-// import useCart from '@/hooks/useCart';
 
 export const getStaticProps = wrapper.getStaticProps((store) => async (ctx) => {
   try {
     const response = await fetch('http://127.0.0.1:5000/products', {next: {revalidate: 300}});
     const products = await response.json();
-
     store.dispatch(addAllProducts(products))
 
     return {
@@ -28,30 +27,7 @@ export const getStaticProps = wrapper.getStaticProps((store) => async (ctx) => {
   }
 })
 
-// interface ProductsListProps {
-//   products: IProduct[];
-// }
-
 const Home: NextPage<any> = (props) => {
-  // const dispatch = useAppDispatch()
-
-  // console.log(useAppSelector(state => state));
-
-
-  // useEffect(() => {
-  //   const productsInCart = typeof window !== 'undefined' ? window.sessionStorage.getItem('productsInCart') : null;
-
-  //   if (productsInCart) {
-  //     const cartProducts: IProductCart[] = JSON.parse(productsInCart)
-  //     dispatch(firstAddProductToCart(cartProducts))
-  //   }
-  // }, [])
-
-  // useEffect(() => {
-  //   console.log('index');
-  //   if (!isCheckDB)
-  //     summationProducts()
-  // }, [])
 
   return (
     <RootLayout>
@@ -72,4 +48,3 @@ const Home: NextPage<any> = (props) => {
 }
 
 export default connect((state: AppState) => state)(Home);
-// export default Home

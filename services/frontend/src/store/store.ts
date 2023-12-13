@@ -5,15 +5,18 @@ import {
   combineReducers,
   configureStore,
 } from "@reduxjs/toolkit";
+import { createWrapper } from "next-redux-wrapper";
+
 import productReducer from "./reducers/ProductsSlice";
 import cartReducer from "./reducers/CartSlice";
 import userReducer from "./reducers/UserSlice";
-import { createWrapper } from "next-redux-wrapper";
+import categoriesReducer from "./reducers/CategoriesSlice";
 
 const rootReducer = combineReducers({
   productReducer,
   cartReducer,
   userReducer,
+  categoriesReducer,
 });
 
 const makeStore = () =>

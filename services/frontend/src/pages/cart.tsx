@@ -1,7 +1,9 @@
 import { CartClient } from "@/components/Cart/CartClient";
 import { Container } from "@/components/Container";
 import { RootLayout } from "@/components/RootLayout";
+import { addAllProducts } from "@/store/reducers/ProductsSlice";
 import { AppState, wrapper } from "@/store/store";
+import axios from "axios";
 import { GetServerSideProps, GetServerSidePropsResult } from "next";
 import { connect } from "react-redux";
 
@@ -23,15 +25,18 @@ const Cart =  ({ pageProps }: { pageProps: any }) => {
 
 export const getServerSideProps: GetServerSideProps<CartProps> = wrapper.getServerSideProps(
   (store) => async () => { 
-    const user = store.getState().userReducer.user    
+    const user = store.getState().userReducer.user   
+    const products = store.getState().productReducer.products
 
-    if (user) 
-      return {
-        props: { isAuth: true },
-      } as GetServerSidePropsResult<CartProps>;;
+    if (products.length === 0) {
+      const response = await fetch('http://localhost:5000/products', { next: {revalidate: 300} });
+      const products = await response.json();
+      
+      store.dispatch(addAllProducts(products))
+    }
 
     return {
-      props: { isAuth: false },
+      props: { isAuth: !!user },
     } as GetServerSidePropsResult<CartProps>;;
   }
 );

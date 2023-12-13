@@ -1,16 +1,19 @@
 import { useEffect } from "react";
-import axios from "axios";
 
 import { useAppDispatch, useAppSelector } from "@/store/types";
-import { addProductToCart as addProduct, decrementOneProduct, deleteAllProducts, deleteProduct, incrementOneProduct } from "@/store/reducers/CartSlice";
+import { addProductToCart as addProduct, decrementOneProduct, deleteAllProducts, deleteProduct, firstAddProductToCart, incrementOneProduct } from "@/store/reducers/CartSlice";
 
 import { IUseCart } from "@/interfaces/cart.interface";
-import { IProductCart } from "@/interfaces/product.interface";
-import { IOrder } from "@/interfaces/user.interface";
+import { IProduct } from "@/interfaces/product.interface";
+import { deleteAllProductInDB, deleteProductInDB } from "@/helpers/deleteProductInDB";
+import addProductsToDB from "@/helpers/addProductToDB";
+import changeOrderInDB from "@/helpers/changeOrderInDB";
 
 const useCart = (): IUseCart => {
   const dispatch = useAppDispatch()
   const cart = useAppSelector(state => state.cartReducer.products)
+  const DBOrders = useAppSelector(state => state.userReducer.user?.orders)
+  const user = useAppSelector(state => state.userReducer.user)
 
   // удаление продукта из корзины
   const deleteOneProductInCart = (id: number) => {
@@ -18,6 +21,9 @@ const useCart = (): IUseCart => {
       window.sessionStorage.removeItem('productsInCart')
 
     dispatch(deleteProduct(id))
+    const order = user?.orders.find(el => el.product.id === id)
+    if (order && order.id)
+      deleteProductInDB(order.id)
   }
 
   // общее количество товара в корзине
@@ -28,38 +34,45 @@ const useCart = (): IUseCart => {
   }
 
   // добавление продукта в корзину
-  const addProductToCart = async (product: IProductCart) => {
+  const addProductToCart = async (product: IProduct) => {
     dispatch(addProduct(product))
+
+    if (user) addProductsToDB([product], user.id)
+    
     writeToSessionStorage()
-  };
+  }
 
   // проверка продукта на наличие в корзине
   const isProductInCart = (id: number): boolean => {
-    // const productsInCart = typeof window !== 'undefined' ? window.sessionStorage.getItem('productsInCart') : null;
-    // if (productsInCart) {
-    //   const products: IProductCart[] = JSON.parse(productsInCart)
-    //   const product = products.find(el => el.id === id)
-    //   return !!product
-    // }
-    // return false
     const product = cart.find(el => el.id === id)
     return !!product
   }
 
-  // увеличение количествва товара в корзине
+  // увеличение количества товара в корзине
   const decreaseProduct = (id: number): void => {
+    const product = cart.find(el => el.id === id)
+    if (product && user) changeOrderInDB(product.id, product.quantity - 1)
+
     dispatch(decrementOneProduct(id))
+    writeToSessionStorage()
   }
 
   // уменьшение количества товара в корзине
   const increaseProduct = (id: number) => {
+    const product = cart.find(el => el.id === id)
+    if (product && user) changeOrderInDB(product.id, product.quantity + 1)
+
     dispatch(incrementOneProduct(id))
+    writeToSessionStorage()
   }
 
   // очистить корзину
   const clearCart = () => {
     dispatch(deleteAllProducts())
     window.sessionStorage.removeItem('productsInCart')
+
+    if (user?.orders)
+      deleteAllProductInDB(user.orders)
   }
 
   // суммарная стоимость корзины
@@ -73,42 +86,38 @@ const useCart = (): IUseCart => {
       window.sessionStorage.setItem('productsInCart', JSON.stringify(cart))
   }
 
-  // сложение продуктов с бд и из session storage
-  const summationProducts = () => {    
-    // const productsInSessionStorage = typeof window !== 'undefined' ? window.sessionStorage.getItem('productsInCart') : null;
-    // if (productsInSessionStorage) {
-    //   let newOrders: IOrder[] = []
-    //   if (DBOrders) {
-    //     newOrders = [ ...DBOrders ]
-    //   }
+  // слияние продуктов с бд и store
+  const mergeCarts = () => {    
+    console.log('mergeCarts');
+    
+    // если пользователь не авторизован, то функция обрывается
+    if (!user) return
 
-    //   const STOrders: IProductCart[] = JSON.parse(productsInSessionStorage)
+    // получение продуктов из БД
+    let DBCart: IProduct[] = []
+    if (DBOrders) {
+      DBCart = DBOrders.map(el => {
+        return {
+          ...el.product,
+          quantity: el.quantity
+        }
+      })
+    }
 
-    //   STOrders.forEach(el => {
-    //     const hasInDB = newOrders.find(order => order.product.id === el.id)
+    // Удаление товаров из корзины в стейте, которые уже есть в БД, их записываем в бд
+    const filteredCart = cart.filter(el => {
+      const DBProduct = DBCart.find(product => product.id === el.id)
+      return !DBProduct;
+    });
 
-    //     if (!hasInDB) {
-    //       const changedOrder: IOrder = {
-    //         status: 1,
-    //         product: el
-    //       }
+    // Слияние корзины в БД и в стейте
+    const newCart = DBCart.concat(filteredCart)    
 
-    //       // axios.post('/order', changedOrder, { withCredentials: true })
+    // Запись обновленной корзины в store
+    dispatch(firstAddProductToCart(newCart))    
 
-    //       newOrders.push(changedOrder)
-    //     }
-    //   });
-
-    //   const productCart: IProductCart[] = newOrders.map(el => {
-    //     return {
-    //       ...el.product,
-    //       maxQuantity: 15,
-    //     }
-    //   })
-    //   window.sessionStorage.setItem('productsInCart', JSON.stringify(productCart))
-    //   dispatch(firstAddProductToCart(productCart))
-    // }
-    // dispatch(checkDataBase())
+    // Добавление товаров в БД
+    addProductsToDB(filteredCart, user.id)
   }
 
   useEffect(() => {
@@ -125,7 +134,7 @@ const useCart = (): IUseCart => {
     clearCart,
     cartTotalAmount,
     writeToSessionStorage,
-    summationProducts,
+    mergeCarts,
   };
 };
 

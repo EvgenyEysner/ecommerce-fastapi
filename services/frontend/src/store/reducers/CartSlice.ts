@@ -1,9 +1,9 @@
-import { IProductCart } from "@/interfaces/product.interface";
+import { IProduct } from "@/interfaces/product.interface";
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 import { HYDRATE } from "next-redux-wrapper";
 
 interface CartState {
-  products: IProductCart[];
+  products: IProduct[];
   checkDB: boolean;
   isLoading: boolean;
   error: string;
@@ -20,10 +20,10 @@ export const cartSlice = createSlice({
   name: "cart",
   initialState,
   reducers: {
-    firstAddProductToCart(state, action: PayloadAction<IProductCart[]>) {
+    firstAddProductToCart(state, action: PayloadAction<IProduct[]>) {
       state.products = action.payload;
     },
-    addProductToCart(state, action: PayloadAction<IProductCart>) {
+    addProductToCart(state, action: PayloadAction<IProduct>) {
       state.products = state.products.concat(action.payload);
     },
     deleteProduct(state, action: PayloadAction<number>) {
@@ -52,19 +52,12 @@ export const cartSlice = createSlice({
 
       state.products = updatedProducts;
     },
-    // checkDataBase(state, action: PayloadAction) {
-    //   state.checkDB = true;
-    // },
-    // uncheckDataBase(state, action: PayloadAction) {
-    //   state.checkDB = false;
-    // },
   },
 
   extraReducers: {
     [HYDRATE]: (state, action) => {
       if (action.payload.cartReducer.products.length === 0) return { ...state };
 
-      // state.checkDB = action.payload.cartReducer.checkDB;
       state.products = action.payload.cartReducer.products;
     },
   },
@@ -77,7 +70,5 @@ export const {
   deleteAllProducts,
   incrementOneProduct,
   decrementOneProduct,
-  // checkDataBase,
-  // uncheckDataBase,
 } = cartSlice.actions;
 export default cartSlice.reducer;

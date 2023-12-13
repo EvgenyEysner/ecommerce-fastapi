@@ -3,29 +3,28 @@ import Link from "next/link";
 import { FaTelegram, FaVk, FaWhatsapp, FaYoutube } from "react-icons/fa";
 import { Container } from "../Container";
 import { FooterList } from "./FooterList";
+import { useAppSelector } from "@/store/types";
 
 export const Footer: React.FC = () => {
+  const categories = useAppSelector(state => state.categoriesReducer.categories)
+
   return (
     <footer className='bg-slate-700 text-slate-200 text-sm mt-16'>
       <Container>
         <div className='flex flex-col md:flex-row justify-between pt-16 pb-8'>
           <FooterList>
             <h3 className='text-base font-bold mb-2'>Категории</h3>
-            <Link href='#'>Категория 1</Link>
-            <Link href='#'>Категория 2</Link>
-            <Link href='#'>Категория 3</Link>
-            <Link href='#'>Категория 4</Link>
-            <Link href='#'>Категория 5</Link>
-            <Link href='#'>Категория 6</Link>
+            {categories.map((el, index) => <Link href='#' key={index}>{el.name}</Link>)}
           </FooterList>
           <FooterList>
             <h3 className='text-base font-bold mb-2'>Покупателю</h3>
-            <Link href='#'>Категория 1</Link>
+            {categories.map((el, index) => <Link href='#' key={index}>{el.name}</Link>)}
+            {/* <Link href='#'>Категория 1</Link>
             <Link href='#'>Категория 2</Link>
             <Link href='#'>Категория 3</Link>
             <Link href='#'>Категория 4</Link>
             <Link href='#'>Категория 5</Link>
-            <Link href='#'>Категория 6</Link>
+            <Link href='#'>Категория 6</Link> */}
           </FooterList>
           <div className='w-full md:w-1/3 mb-6 md:mb-0'>
             <h3 className='text-base font-bold mb-2'>О нас</h3>

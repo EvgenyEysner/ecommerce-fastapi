@@ -1,21 +1,23 @@
 import React, { useState } from "react"
+import { useRouter } from "next/router"
 import Link from "next/link"
 import axios, { AxiosResponse } from "axios"
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form"
 import toast from "react-hot-toast"
 import { AiOutlineGoogle } from "react-icons/ai"
+
 import { Heading } from "../Product/Heading"
 import { CartButton } from "@/UI/CartButton"
 import { Input } from "@/UI/Input"
+
 import { validateEmail } from "@/helpers/validateEmail"
 import { validatePassword } from "@/helpers/validatePassword"
-import { useAppDispatch, useAppSelector } from "@/store/types"
+
+import { useAppSelector } from "@/store/types"
 import { IUser } from "@/interfaces/user.interface"
-import { addUser } from "@/store/reducers/UserSlice"
-import { useRouter } from "next/router"
+
 
 export const RegisterForm = () => {
-  const dispatch = useAppDispatch()
   const [isLoading, setIsLoading] = useState(false)
   const router = useRouter()
   const user = useAppSelector(state => state.userReducer.user)
@@ -62,7 +64,7 @@ export const RegisterForm = () => {
   return (
     <>
       <Heading title='Sign Up to E-Shop' />
-      <CartButton outline label='Sign up with Google' icon={AiOutlineGoogle} onClick={() => { }} />
+      {/* <CartButton outline label='Sign up with Google' icon={AiOutlineGoogle} onClick={() => { }} /> */}
       <hr className='bg-slate-300 w-full h-px' />
       <Input
         id='name'
