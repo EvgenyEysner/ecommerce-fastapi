@@ -24,3 +24,4 @@ ProductOutSchema = pydantic_model_creator(
 
 class UpdateProduct(BaseModel):
     quantity: int
+    on_stock: bool

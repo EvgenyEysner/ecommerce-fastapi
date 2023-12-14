@@ -1,10 +1,12 @@
 from typing import List
 
 from fastapi import APIRouter, HTTPException
+from fastapi import Request
 from tortoise.contrib.fastapi import HTTPNotFoundError
 from tortoise.exceptions import DoesNotExist
 
 import src.crud.products as crud
+from src.database.models import Product
 from src.schemas.products import ProductInSchema, UpdateProduct, ProductOutSchema
 from src.schemas.token import Status
 
@@ -55,3 +57,10 @@ async def update_product(
 )
 async def delete_product(product_id: int):
     return await crud.delete_product(product_id)
+
+
+@router.get("/search/", response_model=List[ProductInSchema])
+async def search_product(request: Request):
+    query = request.query_params.get("q")
+    search_query = await Product.filter(name__icontains=query)
+    return search_query
