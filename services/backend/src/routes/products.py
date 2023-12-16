@@ -1,7 +1,6 @@
-from typing import List
+from typing import List, Optional
 
 from fastapi import APIRouter, HTTPException
-from fastapi import Request
 from tortoise.contrib.fastapi import HTTPNotFoundError
 from tortoise.exceptions import DoesNotExist
 
@@ -60,7 +59,11 @@ async def delete_product(product_id: int):
 
 
 @router.get("/search/", response_model=List[ProductInSchema])
-async def search_product(request: Request):
-    query = request.query_params.get("q")
-    search_query = await Product.filter(name__icontains=query)
-    return search_query
+async def search_product(query: Optional[str] = None):
+    try:
+        return await Product.filter(name__icontains=query)
+    except DoesNotExist:
+        raise HTTPException(
+            status_code=404,
+            detail="Product does not exist",
+        )
