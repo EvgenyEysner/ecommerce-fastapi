@@ -6,7 +6,12 @@ from tortoise.exceptions import DoesNotExist
 
 import src.crud.products as crud
 from src.database.models import Product
-from src.schemas.products import ProductInSchema, UpdateProduct, ProductOutSchema
+from src.schemas.products import (
+    ProductInSchema,
+    UpdateProduct,
+    ProductOutSchema,
+    ProductSearchSchema,
+)
 from src.schemas.token import Status
 
 router = APIRouter()
@@ -58,7 +63,7 @@ async def delete_product(product_id: int):
     return await crud.delete_product(product_id)
 
 
-@router.get("/search/", response_model=List[ProductInSchema])
+@router.get("/search/", response_model=List[ProductSearchSchema])
 async def search_product(query: Optional[str] = None):
     try:
         return await Product.filter(name__icontains=query)

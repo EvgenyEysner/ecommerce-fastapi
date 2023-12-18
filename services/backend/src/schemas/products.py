@@ -22,6 +22,22 @@ ProductOutSchema = pydantic_model_creator(
 )
 
 
+ProductSearchSchema = pydantic_model_creator(
+    Product,
+    name="ProductSearch",
+    include=(
+        "id",
+        "name",
+        "description",
+        "category_id",
+        "quantity",
+        "on_stock",
+        "brand",
+        "price",
+    ),
+)
+
+
 class UpdateProduct(BaseModel):
     quantity: int
     on_stock: bool
