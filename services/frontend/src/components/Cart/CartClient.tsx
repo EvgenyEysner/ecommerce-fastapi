@@ -41,11 +41,7 @@ export const CartClient: React.FC<CartClientProps> = ({ isAuth }) => {
         <div className='justify-self-end text-transform: uppercase'>Сумма</div>
       </div>
       <div>
-        {cartProducts.map(item => {
-          return (
-            <ItemContent key={item.id} item={item} />
-          )
-        })}
+        {cartProducts.map(item => <ItemContent key={item.id} item={item} />)}
       </div>
       <div className='border-t-[1.5px] border-slate-200 py-4 flex justify-between gap-4'>
         <div className='w-[90px]'>

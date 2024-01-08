@@ -60,14 +60,6 @@ export const ItemContent: React.FC<ItemContentProps> = ({ item }) => {
       </div>
     )
 
-  // useEffect(() => {
-  //   if (item.quantity > product.quantity) {
-  //     const newProduct: IProduct = { ...item, quantity: product.quantity }
-  //     dispatch(deleteProduct(item.id))
-  //     dispatch(addProductToCart(newProduct))
-  //   }
-  // }, [])
-
   return (
     <div className='grid grid-cols-5 text-xs md:text-sm gap-4 border-t-[1.5px] border-slate-200 py-4 items-center'>
       <div className='col-span-2 justify-self-start flex gap-2 md:gap-4'>

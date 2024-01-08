@@ -17,22 +17,20 @@ import { addAllCategories } from '@/store/reducers/CategoriesSlice'
 import Head from 'next/head'
 
 const App = ({ Component, ...rest }: AppProps) => {
-  const {store, props} = wrapper.useWrappedStore(rest);
+  const {store, props} = wrapper.useWrappedStore(rest);  
 
   const { mergeCarts } = useMergeCarts(store)
   
-  useEffect(() => {
+  useEffect(() => {    
+    const cart = store.getState().cartReducer.products
     const sessionStorage = typeof window !== 'undefined' ? window.sessionStorage.getItem('productsInCart') : null;
-    if (sessionStorage) {
+    if (sessionStorage && cart.length === 0) {
       const cartProducts: IProduct[] = JSON.parse(sessionStorage)
       store.dispatch(firstAddProductToCart(cartProducts))
     }
   }, [])  
 
-  useEffect(() => {
-    mergeCarts()
-  }, [props.pageProps?.user?.orders.length])
-
+  useEffect(() => mergeCarts(), [])
   
   return (
     <Provider store={store}>
@@ -78,10 +76,12 @@ App.getInitialProps = wrapper.getInitialAppProps(store => async ({ ctx }) => {
     if (categoriesResponse.ok) {
       const categories: ICategory[] = await categoriesResponse.json()
       store.dispatch(addAllCategories(categories))
-    }
+    }    
 
     return { pageProps: { user } };
   } catch (error) {
+    console.log(error);
+    
     return { pageProps: { user: null } };
   }
 });

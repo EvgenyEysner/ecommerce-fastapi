@@ -4,16 +4,16 @@ import { Rating } from "@mui/material";
 // import { ProductImage } from "@/app/components/product/ProductImage";
 import { MdCheckCircle } from "react-icons/md";
 import { useRouter } from "next/router";
+import toast from "react-hot-toast";
+
+import { ProductImage } from "./ProductImage";
 import { Horizontal } from "@/UI/Horizontal";
 import { CartButton } from "@/UI/CartButton";
-import useCart from "@/hooks/useCart";
-import toast from "react-hot-toast";
-import { IProduct, IProductCart } from "@/interfaces/product.interface";
-import { addProductToCart as addProduct } from "@/store/reducers/CartSlice";
-import { useDispatch } from "react-redux";
-import axios from "axios";
+
 import { useAppSelector } from "@/store/types";
+import { IProduct } from "@/interfaces/product.interface";
 import { formatPrice } from "@/helpers/formatPrice";
+import useCart from "@/hooks/useCart";
 
 interface ProductDetailsProps {
   product: IProduct
@@ -35,7 +35,7 @@ export const ProductDetails: React.FC<ProductDetailsProps> = ({ product }) => {
 
     return (
       <div className='grid grid-cols-1 md:grid-cols-2 gap-12'>
-        {/*<ProductImage cartProduct={cartProduct} product={product} handleColorSelect={handleColorSelect} />*/}
+        <ProductImage product={product} />
         <div className='flex flex-col gap-1 text-slate-500 text-sm'>
           <h2 className='text-3xl font-medium text-slate-700'>{product.name}</h2>
           <Horizontal />

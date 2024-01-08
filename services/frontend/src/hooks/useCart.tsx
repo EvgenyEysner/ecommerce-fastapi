@@ -87,9 +87,7 @@ const useCart = (): IUseCart => {
   }
 
   // слияние продуктов с бд и store
-  const mergeCarts = () => {    
-    console.log('mergeCarts');
-    
+  const mergeCarts = () => {       
     // если пользователь не авторизован, то функция обрывается
     if (!user) return
 
@@ -120,9 +118,7 @@ const useCart = (): IUseCart => {
     addProductsToDB(filteredCart, user.id)
   }
 
-  useEffect(() => {
-    writeToSessionStorage();
-  }, [dispatch, writeToSessionStorage]);
+  useEffect(() => writeToSessionStorage(), [dispatch, writeToSessionStorage]);
 
   return {
     addProductToCart,

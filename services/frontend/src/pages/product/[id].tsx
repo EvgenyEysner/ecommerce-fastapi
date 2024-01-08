@@ -37,7 +37,7 @@ export default function Product({pageProps}: { pageProps: any }) {
 }
 
 export const getStaticPaths: GetStaticPaths = async () => {
-  const res = await fetch('http://127.0.0.1:5000/products');
+  const res = await fetch('http://localhost:5000/products');
   const products: IProduct[] = await res.json();
 
   const paths = products.map((product) => {
@@ -54,7 +54,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
 
 export const getStaticProps: GetStaticProps = async ({params}) => {
   try {
-    const response = await fetch(`http://127.0.0.1:5000/products/${params?.id}`, {next: {revalidate: 30}});
+    const response = await fetch(`http://localhost:5000/products/${params?.id}`, {next: {revalidate: 30}});
     const product = await response.json();
 
     if (!!product.detail) throw new Error()

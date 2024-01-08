@@ -3,6 +3,7 @@ import { IProduct } from "@/interfaces/product.interface";
 import { firstAddProductToCart } from "@/store/reducers/CartSlice";
 import { AppState } from "@/store/store";
 import { ToolkitStore } from "@reduxjs/toolkit/dist/configureStore";
+import { useEffect } from "react";
 
 // сложение продуктов с бд и store
 const useMergeCart = (store: ToolkitStore) => {  
@@ -41,6 +42,10 @@ const useMergeCart = (store: ToolkitStore) => {
     // Добавление товаров в БД
     addProductsToDB(filteredCart, user.id)
   }
+
+  useEffect(() => {
+    if(user) mergeCarts()
+  }, [user])
 
   return { mergeCarts }
 }
